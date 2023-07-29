@@ -1,0 +1,10 @@
+flutter_native_splash:
+  background_image: "assets/images/backgrounds/splash-screen.png"
+  image: assets/images/logo.png
+  android_12:
+    image: assets/images/logo.png
+    color: "#FFFFFF"
+    icon_background_color: "#AEF1FA"
+  web: false
+  android_screen_orientation: sensorLandscape
+  fullscreen: true

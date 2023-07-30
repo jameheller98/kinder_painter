@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -26,7 +27,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     _videoController.addListener(() {
       if (_videoController.value.position >
-              const Duration(milliseconds: 4000) &&
+              const Duration(milliseconds: 5500) &&
           _opacity == 1) {
         setState(() {
           _opacity = 0;
@@ -37,6 +38,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         setState(() {
           _isWaitingVideo = true;
         });
+
+        context.go('/select-mode-screen');
       }
     });
 

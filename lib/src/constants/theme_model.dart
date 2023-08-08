@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ThemeNameButtonIcon { purple, yellow, green }
+enum ThemeNameButtonIcon { purple, yellow, green, blue, red }
 
 enum ThemeNameButtonText { emerald, blue, purple, pink, red, yellow, aqua }
 

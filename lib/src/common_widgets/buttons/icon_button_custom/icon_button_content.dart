@@ -9,9 +9,10 @@ class IconButtonContent extends StatelessWidget {
   final Color shadowColor;
   final double shadowWidthButton;
   final Color backgroundColor;
-  final void Function() onPress;
+  final void Function()? onPress;
   final AnimationController buttonAnimationController;
   final String svgPictureUrl;
+  final bool disabled;
 
   const IconButtonContent({
     super.key,
@@ -25,6 +26,7 @@ class IconButtonContent extends StatelessWidget {
     required this.onPress,
     required this.buttonAnimationController,
     required this.svgPictureUrl,
+    required this.disabled,
   });
 
   @override
@@ -90,10 +92,12 @@ class IconButtonContent extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: onPress,
-                  onTapDown: (details) =>
-                      buttonAnimationController.forward().then(
+                  onTapDown: (details) => disabled
+                      ? null
+                      : buttonAnimationController.forward().then(
                             (value) => buttonAnimationController.reverse(),
                           ),
+                  borderRadius: BorderRadius.circular(borderRadiusButton),
                   child: Container(
                     alignment: Alignment.center,
                     child: SvgPicture.asset(
@@ -106,6 +110,10 @@ class IconButtonContent extends StatelessWidget {
               ),
             ),
           ),
+          if (disabled)
+            Container(
+              color: const Color.fromRGBO(0, 0, 0, 0.3),
+            ),
         ],
       ),
     );

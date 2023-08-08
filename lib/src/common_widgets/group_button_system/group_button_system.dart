@@ -36,9 +36,10 @@ class GroupButtonSystem extends StatelessWidget {
           case ButtonGroup.upgrade:
             group[element.value]!.add(
               TextButtonCustom(
-                  onPress: () {},
-                  themeName: ThemeNameButtonText.emerald,
-                  title: 'Nâng cấp'),
+                onPress: () {},
+                themeName: ThemeNameButtonText.emerald,
+                title: 'Nâng cấp',
+              ),
             );
             break;
           case ButtonGroup.notification:

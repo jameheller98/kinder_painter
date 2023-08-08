@@ -17,7 +17,7 @@ class DotNotification extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext) {
+  Widget build(BuildContext context) {
     return PositionedTransition(
       rect: RelativeRectTween(
         begin: RelativeRect.fromSize(

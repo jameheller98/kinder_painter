@@ -12,3 +12,16 @@ class CommonAPI extends API {
         }
       : null;
 }
+
+class DrawingAPI extends API {
+  Uri common(String param) => super.buildUri(
+        endpoint: 'common',
+        parametersBuilder: () => paramQueryParameters(null),
+      );
+
+  Map<String, dynamic>? paramQueryParameters(String? param) => param != null
+      ? {
+          "param": param,
+        }
+      : null;
+}

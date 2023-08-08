@@ -17,6 +17,7 @@ class IconButtonCustom extends StatefulWidget {
   final Map<String, double> border;
   final double shadowWidth;
   final double sizeIcon;
+  final bool disabled;
 
   IconButtonCustom({
     super.key,
@@ -28,6 +29,7 @@ class IconButtonCustom extends StatefulWidget {
     Map<String, double>? border,
     double? shadowWidth,
     double? sizeIcon,
+    this.disabled = false,
   })  : isNotification = isNotification ?? false,
         size = size ?? 25,
         border = border ?? {'width': 2, 'radius': 10},
@@ -63,17 +65,18 @@ class _IconButtonCustomState extends State<IconButtonCustom>
         clipBehavior: Clip.none,
         children: [
           IconButtonContent(
-              sizeButton: widget.size,
-              sizeButtonIcon: widget.sizeIcon,
-              borderWidthButton: widget.border['width']!,
-              borderRadiusButton: widget.border['radius']!,
-              shadowWidthButton: widget.shadowWidth,
-              shadowColor: themeButtonIcon[widget.themeName]!.shadowColor,
-              backgroundColor:
-                  themeButtonIcon[widget.themeName]!.backgroundColor,
-              onPress: widget.onPress,
-              buttonAnimationController: _buttonAnimationController,
-              svgPictureUrl: widget.svgPictureUrl),
+            sizeButton: widget.size,
+            sizeButtonIcon: widget.sizeIcon,
+            borderWidthButton: widget.border['width']!,
+            borderRadiusButton: widget.border['radius']!,
+            shadowWidthButton: widget.shadowWidth,
+            shadowColor: themeButtonIcon[widget.themeName]!.shadowColor,
+            backgroundColor: themeButtonIcon[widget.themeName]!.backgroundColor,
+            onPress: widget.disabled ? null : widget.onPress,
+            buttonAnimationController: _buttonAnimationController,
+            svgPictureUrl: widget.svgPictureUrl,
+            disabled: widget.disabled,
+          ),
           if (widget.isNotification)
             DotNotification(
                 sizeButton: widget.size,

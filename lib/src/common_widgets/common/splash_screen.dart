@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:master_source_flutter/src/common_widgets/common/loading_overlay.dart';
 import 'package:video_player/video_player.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -32,6 +33,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         setState(() {
           _opacity = 0;
         });
+
+        LoadingOverlay.of(context).show(hasBarrier: false);
       }
 
       if (!_isWaitingVideo && !_videoController.value.isPlaying) {

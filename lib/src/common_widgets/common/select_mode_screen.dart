@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:master_source_flutter/src/common_widgets/cards/feature_card/feature_card.dart';
+import 'package:master_source_flutter/src/common_widgets/common/loading_overlay.dart';
 import 'package:master_source_flutter/src/common_widgets/group_button_system/group_button_system.dart';
 import 'package:master_source_flutter/src/constants/theme_model.dart';
 
@@ -16,7 +18,6 @@ class SelectModeScreen extends ConsumerStatefulWidget {
 }
 
 class _SelectModeScreenState extends ConsumerState<SelectModeScreen> {
-  bool _loadingFirst = true;
   late Timer _timer;
 
   @override
@@ -24,10 +25,8 @@ class _SelectModeScreenState extends ConsumerState<SelectModeScreen> {
     super.initState();
 
     _timer = Timer(const Duration(milliseconds: 1000), () {
-      setState(
-        () {
-          _loadingFirst = false;
-        },
+      LoadingOverlay.of(context).hide(
+        callback: () => setState(() {}),
       );
     });
   }
@@ -38,7 +37,7 @@ class _SelectModeScreenState extends ConsumerState<SelectModeScreen> {
       children: [
         AnimatedOpacity(
           duration: const Duration(milliseconds: 1000),
-          opacity: _loadingFirst ? 0 : 1,
+          opacity: LoadingOverlay.overlayEntry != null ? 0 : 1,
           curve: Curves.easeInOut,
           child: GroupButtonSystem(
             buttonGroup: const {
@@ -70,7 +69,10 @@ class _SelectModeScreenState extends ConsumerState<SelectModeScreen> {
                           ),
                           const SizedBox(width: 29),
                           FeatureCard(
-                            onPress: () {},
+                            onPress: () {
+                              LoadingOverlay.of(context).show();
+                              context.go('/draw-static-image');
+                            },
                             title: 'TÔ ẢNH TĨNH',
                             themeName: ThemeNameButtonText.purple,
                             lottieUrl: 'assets/lotties/static-draw.json',
@@ -126,13 +128,6 @@ class _SelectModeScreenState extends ConsumerState<SelectModeScreen> {
             ),
           ),
         ),
-        if (_loadingFirst)
-          Center(
-            child: SizedBox(
-              height: 40,
-              child: Lottie.asset('assets/lotties/loading.json'),
-            ),
-          ),
       ],
     );
   }

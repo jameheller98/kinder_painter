@@ -35,6 +35,8 @@ class PushNotificationConfig {
     } on PushNotificationException catch (_) {
       throw const PushNotificationException(
           'Something wrong when get and save fcm token!');
+    } catch (err) {
+      throw PushNotificationException(err.toString());
     }
   }
 }

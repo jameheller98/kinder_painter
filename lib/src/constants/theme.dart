@@ -18,6 +18,16 @@ final themeButtonIcon = {
     backgroundColor: const Color.fromRGBO(38, 222, 128, 1),
     shadowColor: const Color.fromRGBO(0, 244, 199, 1),
   ),
+  ThemeNameButtonIcon.blue: ThemeButtonIcon(
+    name: ThemeNameButtonIcon.blue.name,
+    backgroundColor: const Color.fromRGBO(33, 146, 255, 1),
+    shadowColor: const Color.fromRGBO(1, 123, 255, 1),
+  ),
+  ThemeNameButtonIcon.red: ThemeButtonIcon(
+    name: ThemeNameButtonIcon.red.name,
+    backgroundColor: const Color.fromRGBO(255, 75, 0, 1),
+    shadowColor: const Color.fromRGBO(235, 59, 91, 1),
+  ),
 };
 
 final themeButtonText = {

@@ -17,36 +17,16 @@ class PaintbrushController extends _$PaintbrushController {
         await ref.read(materialsControllerProvider.future);
 
     return Paintbrush(
-      stroke: Stroke(
-        color: materialController.currentMaterial.getColor,
-      ),
+      stroke: materialController.currentMaterial.getColor != null
+          ? Stroke(
+              color: materialController.currentMaterial.getColor!,
+            )
+          : null,
     );
   }
 
-  void changePaintbrushByMaterial(material.Material material) {
-    switch (state.value!.type) {
-      case TypePaintbrush.crayon:
-      case TypePaintbrush.pencil:
-      case TypePaintbrush.paintBrush:
-      case TypePaintbrush.waterPen:
-        state = AsyncData(
-          state.value!.copyWith(
-            stroke: state.value!.stroke!.copyWith(
-              color: material.getColor,
-            ),
-          ),
-        );
-        break;
-      case TypePaintbrush.waterPaint:
-        state = AsyncData(
-          state.value!.copyWith(
-            fill: material.getColor,
-          ),
-        );
-        break;
-      case TypePaintbrush.eraser:
-        break;
-    }
+  void changePaintbrushByMaterial(material.Material currentMaterial) {
+    buildTypePaintBrush(state.value!.type, currentMaterial);
   }
 
   void handleChangePaintbrush(TypePaintbrush type) async {
@@ -55,26 +35,42 @@ class PaintbrushController extends _$PaintbrushController {
         (value) => value.currentMaterial,
       ),
     );
+
+    buildTypePaintBrush(type, currentMaterial);
+  }
+
+  void buildTypePaintBrush(
+      TypePaintbrush type, material.Material currentMaterial) {
     final newPaintbrush = Paintbrush(
       type: type,
       stroke: Stroke(
-        color: currentMaterial.getColor,
+        color: currentMaterial.getColor != null
+            ? currentMaterial.getColor!
+            : Colors.transparent,
       ),
-      fill: currentMaterial.getColor,
+      fill: currentMaterial.getColor != null
+          ? currentMaterial.getColor!
+          : Colors.transparent,
+      idImagePattern: currentMaterial.patterns.isNotEmpty
+          ? currentMaterial.patterns
+              .elementAt(currentMaterial.indexDrawMaterialActive)
+              .id
+          : null,
     );
 
     switch (type) {
       case TypePaintbrush.crayon:
         state = AsyncData(
           newPaintbrush.copyWith(
-            stroke: newPaintbrush.stroke!.copyWith(widthStroke: 6),
+            stroke: newPaintbrush.stroke?.copyWith(widthStroke: 6),
+            fill: null,
           ),
         );
         break;
       case TypePaintbrush.pencil:
         state = AsyncData(
           newPaintbrush.copyWith(
-            stroke: newPaintbrush.stroke!.copyWith(widthStroke: 3),
+            stroke: newPaintbrush.stroke?.copyWith(widthStroke: 3),
             fill: null,
           ),
         );
@@ -82,7 +78,7 @@ class PaintbrushController extends _$PaintbrushController {
       case TypePaintbrush.paintBrush:
         state = AsyncData(
           newPaintbrush.copyWith(
-            stroke: newPaintbrush.stroke!.copyWith(widthStroke: 12),
+            stroke: newPaintbrush.stroke?.copyWith(widthStroke: 12),
             fill: null,
           ),
         );
@@ -90,20 +86,23 @@ class PaintbrushController extends _$PaintbrushController {
       case TypePaintbrush.waterPen:
         state = AsyncData(
           newPaintbrush.copyWith(
-            stroke: newPaintbrush.stroke!.copyWith(widthStroke: 8),
+            stroke: newPaintbrush.stroke?.copyWith(widthStroke: 8),
             fill: null,
           ),
         );
         break;
       case TypePaintbrush.waterPaint:
         state = AsyncData(
-          newPaintbrush.copyWith(stroke: null),
+          newPaintbrush.copyWith(
+            stroke: null,
+          ),
         );
       case TypePaintbrush.eraser:
         state = AsyncData(
           newPaintbrush.copyWith(
             fill: null,
             stroke: null,
+            idImagePattern: null,
             blendMode: BlendMode.clear,
           ),
         );

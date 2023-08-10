@@ -7,7 +7,7 @@ part of 'materials_controller.dart';
 // **************************************************************************
 
 String _$materialsControllerHash() =>
-    r'7695b6c46b62b2b3f34639c91bd799e65b58d8a7';
+    r'f150cb4b4b2353ee297dc1404e660167c7847517';
 
 /// See also [MaterialsController].
 @ProviderFor(MaterialsController)

@@ -31,7 +31,6 @@ class DrawStroke extends CustomPainter {
           ..strokeCap = StrokeCap.round
           ..strokeJoin = StrokeJoin.round
           ..strokeWidth = stroke!.widthStroke * ratioScale
-          ..color = stroke!.color
           ..blendMode = blendMode
           ..isAntiAlias = isAntiAlias
           ..shader = pattern != null
@@ -39,9 +38,13 @@ class DrawStroke extends CustomPainter {
                   pattern!,
                   TileMode.repeated,
                   TileMode.repeated,
-                  Matrix4.identity().scaled(0.2).storage,
+                  Matrix4.identity().scaled(0.6).storage,
                 )
               : null;
+
+        if (stroke!.color != Colors.transparent) {
+          paintStroke.color = stroke!.color;
+        }
 
         Offset point1 = points[0];
         Offset point2 = points[1];
@@ -69,5 +72,6 @@ class DrawStroke extends CustomPainter {
       points != oldDelegate.points ||
       blendMode != oldDelegate.blendMode ||
       isAntiAlias != oldDelegate.isAntiAlias ||
-      ratioScale != oldDelegate.ratioScale;
+      ratioScale != oldDelegate.ratioScale ||
+      pattern != oldDelegate.pattern;
 }

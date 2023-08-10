@@ -28,11 +28,11 @@ class Material with _$Material {
     @Default([]) List<DrawSticker> stickers,
   }) = _Material;
 
-  Color get getColor {
+  Color? get getColor {
     if (colors.isNotEmpty) {
       return colors[indexDrawMaterialActive].color;
     } else {
-      return Colors.black;
+      return null;
     }
   }
 

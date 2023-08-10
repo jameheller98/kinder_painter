@@ -28,6 +28,11 @@ final themeButtonIcon = {
     backgroundColor: const Color.fromRGBO(255, 75, 0, 1),
     shadowColor: const Color.fromRGBO(235, 59, 91, 1),
   ),
+  ThemeNameButtonIcon.turquoise: ThemeButtonIcon(
+    name: ThemeNameButtonText.emerald.name,
+    backgroundColor: const Color.fromRGBO(0, 234, 211, 1),
+    shadowColor: const Color.fromRGBO(16, 185, 178, 1),
+  )
 };
 
 final themeButtonText = {

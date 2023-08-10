@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:master_source_flutter/src/common_widgets/common/loading_overlay.dart';
+import 'package:master_source_flutter/src/features/drawing/presentation/materials_controller.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -50,11 +51,16 @@ class DrawController extends _$DrawController {
     );
 
     if (paintbrush.value!.type == TypePaintbrush.waterPaint &&
-        state.value!.characterDraw
-                .lastDrawPathOfCharacter(lastIndexDrawPaths)
-                ?.paintbrush
-                .fill ==
-            paintbrush.value!.fill) {
+        (state.value!.characterDraw
+                    .lastDrawPathOfCharacter(lastIndexDrawPaths)
+                    ?.paintbrush
+                    .fill ==
+                paintbrush.value!.fill &&
+            state.value!.characterDraw
+                    .lastDrawPathOfCharacter(lastIndexDrawPaths)
+                    ?.paintbrush
+                    .idImagePattern ==
+                paintbrush.value!.idImagePattern)) {
       return;
     }
 
@@ -66,17 +72,15 @@ class DrawController extends _$DrawController {
     );
 
     state = AsyncData(state.value!.copyWith(
-      isDrawing: true,
+      isDrawing: paintbrush.value!.type != TypePaintbrush.waterPaint,
       currentDrawPath: currentDrawPath,
     ));
   }
 
   void handleTouchMove(DragUpdateDetails details) {
-    final paintbrush = ref.read(paintbrushControllerProvider);
+    // final paintbrush = ref.read(paintbrushControllerProvider);
 
-    if (!state.value!.isDrawing ||
-        state.value!.currentDrawPath == null ||
-        paintbrush.value!.type == TypePaintbrush.waterPaint) {
+    if (!state.value!.isDrawing || state.value!.currentDrawPath == null) {
       return;
     }
 
@@ -260,7 +264,12 @@ class DrawController extends _$DrawController {
     required List<DrawPath> drawPaths,
     ui.Image? previousImage,
     double xSize = 1,
+    isAntiAlias = true,
   }) {
+    final listImagePatternAsync = ref.read(
+      materialsControllerProvider
+          .select((value) => AsyncData(value.value?.listImagePattern)),
+    );
     final Size sizeCanvas = ref.read(sizeCanvasProvider);
     ui.PictureRecorder recorder = ui.PictureRecorder();
     Canvas canvas = Canvas(recorder);
@@ -268,6 +277,8 @@ class DrawController extends _$DrawController {
       characterPath: characterPath,
       drawPaths: drawPaths,
       previousImage: previousImage,
+      listImagePattern: listImagePatternAsync.value,
+      isAntiAlias: isAntiAlias,
       xSize: xSize,
     );
     drawPainter.paint(canvas, sizeCanvas * xSize);
@@ -284,6 +295,7 @@ class DrawController extends _$DrawController {
       characterPath: characterPath,
       drawPaths: drawPaths,
       previousImage: previousImage,
+      isAntiAlias: false,
     );
 
     if (listPictureCharacterDrawPath[idCharacterDrawPath] != null) {
@@ -315,14 +327,14 @@ class DrawController extends _$DrawController {
       final drawPainter = DrawPainter(
         characterDraw: state.value!.characterDraw,
         listPictureCharacterDrawPath: listPictureCharacterDrawPath,
-        xSize: 4,
+        xSize: 1.5,
       );
 
-      drawPainter.paint(canvas, sizeCanvas * 4);
+      drawPainter.paint(canvas, sizeCanvas * 1.5);
       picture = recorder.endRecording();
       image = await picture.toImage(
-        (sizeCanvas.width * 4).floor(),
-        (sizeCanvas.height * 4).floor(),
+        (sizeCanvas.width * 1.5).floor(),
+        (sizeCanvas.height * 1.5).floor(),
       );
 
       final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -406,11 +418,11 @@ class DrawController extends _$DrawController {
           characterPath: element.value["characterPath"],
           drawPaths: element.value["drawPaths"],
           previousImage: element.value["previousImage"],
-          xSize: 4,
+          xSize: 1.5,
         );
         image = await picture.toImage(
-          (sizeCanvas.width * 4).floor(),
-          (sizeCanvas.height * 4).floor(),
+          (sizeCanvas.width * 1.5).floor(),
+          (sizeCanvas.height * 1.5).floor(),
         );
 
         final bytes = await image.toByteData(format: ui.ImageByteFormat.png);

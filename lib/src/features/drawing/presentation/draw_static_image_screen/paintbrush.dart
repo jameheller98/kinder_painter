@@ -40,10 +40,12 @@ class Paintbrush extends ConsumerWidget {
               child: SvgPicture.string(
                 stringSvg(
                   paintbrush.type == type &&
-                          paintbrush.type != TypePaintbrush.eraser
+                          paintbrush.type != TypePaintbrush.eraser &&
+                          paintbrush.stroke?.color != Colors.transparent &&
+                          paintbrush.fill != Colors.transparent
                       ? paintbrush.type != TypePaintbrush.waterPaint
-                          ? paintbrush.stroke!.color
-                          : paintbrush.fill!
+                          ? paintbrush.stroke?.color
+                          : paintbrush.fill
                       : null,
                 ),
               ),

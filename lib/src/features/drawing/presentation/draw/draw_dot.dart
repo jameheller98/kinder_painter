@@ -26,7 +26,6 @@ class DrawDot extends CustomPainter {
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round
         ..strokeWidth = stroke!.widthStroke
-        ..color = stroke!.color
         ..blendMode = blendMode
         ..isAntiAlias = isAntiAlias
         ..shader = pattern != null
@@ -37,6 +36,10 @@ class DrawDot extends CustomPainter {
                 Matrix4.identity().scaled(0.2).storage,
               )
             : null;
+
+      if (stroke!.color != Colors.transparent) {
+        paintDot.color = stroke!.color;
+      }
 
       canvas.drawRect(
         Rect.fromLTWH(point.dx, point.dy, 1, 1),
@@ -50,5 +53,6 @@ class DrawDot extends CustomPainter {
       stroke != oldDelegate.stroke ||
       point != oldDelegate.point ||
       blendMode != oldDelegate.blendMode ||
-      isAntiAlias != oldDelegate.isAntiAlias;
+      isAntiAlias != oldDelegate.isAntiAlias ||
+      pattern != oldDelegate.pattern;
 }

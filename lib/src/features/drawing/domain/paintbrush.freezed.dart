@@ -23,6 +23,7 @@ mixin _$Paintbrush {
   Stroke? get stroke => throw _privateConstructorUsedError;
   @ColorJsonConverter()
   Color? get fill => throw _privateConstructorUsedError;
+  int? get idImagePattern => throw _privateConstructorUsedError;
   TypePaintbrush get type => throw _privateConstructorUsedError;
   BlendMode get blendMode => throw _privateConstructorUsedError;
 
@@ -41,6 +42,7 @@ abstract class $PaintbrushCopyWith<$Res> {
   $Res call(
       {Stroke? stroke,
       @ColorJsonConverter() Color? fill,
+      int? idImagePattern,
       TypePaintbrush type,
       BlendMode blendMode});
 
@@ -62,6 +64,7 @@ class _$PaintbrushCopyWithImpl<$Res, $Val extends Paintbrush>
   $Res call({
     Object? stroke = freezed,
     Object? fill = freezed,
+    Object? idImagePattern = freezed,
     Object? type = null,
     Object? blendMode = null,
   }) {
@@ -74,6 +77,10 @@ class _$PaintbrushCopyWithImpl<$Res, $Val extends Paintbrush>
           ? _value.fill
           : fill // ignore: cast_nullable_to_non_nullable
               as Color?,
+      idImagePattern: freezed == idImagePattern
+          ? _value.idImagePattern
+          : idImagePattern // ignore: cast_nullable_to_non_nullable
+              as int?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -109,6 +116,7 @@ abstract class _$$_PaintbrushCopyWith<$Res>
   $Res call(
       {Stroke? stroke,
       @ColorJsonConverter() Color? fill,
+      int? idImagePattern,
       TypePaintbrush type,
       BlendMode blendMode});
 
@@ -129,6 +137,7 @@ class __$$_PaintbrushCopyWithImpl<$Res>
   $Res call({
     Object? stroke = freezed,
     Object? fill = freezed,
+    Object? idImagePattern = freezed,
     Object? type = null,
     Object? blendMode = null,
   }) {
@@ -141,6 +150,10 @@ class __$$_PaintbrushCopyWithImpl<$Res>
           ? _value.fill
           : fill // ignore: cast_nullable_to_non_nullable
               as Color?,
+      idImagePattern: freezed == idImagePattern
+          ? _value.idImagePattern
+          : idImagePattern // ignore: cast_nullable_to_non_nullable
+              as int?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -159,6 +172,7 @@ class _$_Paintbrush implements _Paintbrush {
   const _$_Paintbrush(
       {this.stroke,
       @ColorJsonConverter() this.fill,
+      this.idImagePattern,
       this.type = TypePaintbrush.crayon,
       this.blendMode = BlendMode.srcOver});
 
@@ -171,6 +185,8 @@ class _$_Paintbrush implements _Paintbrush {
   @ColorJsonConverter()
   final Color? fill;
   @override
+  final int? idImagePattern;
+  @override
   @JsonKey()
   final TypePaintbrush type;
   @override
@@ -179,7 +195,7 @@ class _$_Paintbrush implements _Paintbrush {
 
   @override
   String toString() {
-    return 'Paintbrush(stroke: $stroke, fill: $fill, type: $type, blendMode: $blendMode)';
+    return 'Paintbrush(stroke: $stroke, fill: $fill, idImagePattern: $idImagePattern, type: $type, blendMode: $blendMode)';
   }
 
   @override
@@ -189,6 +205,8 @@ class _$_Paintbrush implements _Paintbrush {
             other is _$_Paintbrush &&
             (identical(other.stroke, stroke) || other.stroke == stroke) &&
             (identical(other.fill, fill) || other.fill == fill) &&
+            (identical(other.idImagePattern, idImagePattern) ||
+                other.idImagePattern == idImagePattern) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.blendMode, blendMode) ||
                 other.blendMode == blendMode));
@@ -196,7 +214,8 @@ class _$_Paintbrush implements _Paintbrush {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, stroke, fill, type, blendMode);
+  int get hashCode =>
+      Object.hash(runtimeType, stroke, fill, idImagePattern, type, blendMode);
 
   @JsonKey(ignore: true)
   @override
@@ -216,6 +235,7 @@ abstract class _Paintbrush implements Paintbrush {
   const factory _Paintbrush(
       {final Stroke? stroke,
       @ColorJsonConverter() final Color? fill,
+      final int? idImagePattern,
       final TypePaintbrush type,
       final BlendMode blendMode}) = _$_Paintbrush;
 
@@ -227,6 +247,8 @@ abstract class _Paintbrush implements Paintbrush {
   @override
   @ColorJsonConverter()
   Color? get fill;
+  @override
+  int? get idImagePattern;
   @override
   TypePaintbrush get type;
   @override

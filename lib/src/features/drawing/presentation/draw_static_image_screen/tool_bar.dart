@@ -82,8 +82,8 @@ class ToolBar extends ConsumerWidget {
             onPress: () => ref
                 .read(drawControllerProvider.notifier)
                 .handleSaveImage(context),
-            themeName: ThemeNameButtonIcon.blue,
-            svgPictureUrl: 'assets/svgs/palette.svg',
+            themeName: ThemeNameButtonIcon.turquoise,
+            svgPictureUrl: 'assets/svgs/check.svg',
           ),
         ],
       ),

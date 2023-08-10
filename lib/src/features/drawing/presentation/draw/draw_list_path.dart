@@ -10,11 +10,13 @@ class DrawListPath extends CustomPainter {
   final List<DrawPath> drawPaths;
   final Path? characterPath;
   final bool isAntiAlias;
+  final Map<int, dynamic>? listImagePattern;
 
   const DrawListPath({
     required this.drawPaths,
     this.characterPath,
     this.isAntiAlias = false,
+    this.listImagePattern,
   });
 
   @override
@@ -27,11 +29,21 @@ class DrawListPath extends CustomPainter {
         DrawFill(
           fill: drawPath.paintbrush.fill!,
           path: characterPath!,
+          isAntiAlias: isAntiAlias,
+          pattern: listImagePattern != null &&
+                  drawPath.paintbrush.idImagePattern != null
+              ? listImagePattern![drawPath.paintbrush.idImagePattern]["image"]
+              : null,
         ).paint(canvas, size);
       } else {
         draw_path.DrawPath(
           points: drawPath.points,
           paintbrush: drawPath.paintbrush,
+          pattern: listImagePattern != null &&
+                  drawPath.paintbrush.idImagePattern != null
+              ? listImagePattern![drawPath.paintbrush.idImagePattern]["image"]
+              : null,
+          isAntiAlias: isAntiAlias,
         ).paint(canvas, size);
       }
     }
@@ -41,5 +53,6 @@ class DrawListPath extends CustomPainter {
   bool shouldRepaint(covariant DrawListPath oldDelegate) =>
       drawPaths != oldDelegate.drawPaths ||
       characterPath != oldDelegate.characterPath ||
-      isAntiAlias != oldDelegate.isAntiAlias;
+      isAntiAlias != oldDelegate.isAntiAlias ||
+      listImagePattern != oldDelegate.listImagePattern;
 }

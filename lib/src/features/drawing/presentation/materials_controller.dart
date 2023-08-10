@@ -14,7 +14,7 @@ class MaterialsController extends _$MaterialsController {
   Future<DrawMaterial> build() async {
     final materials =
         await ref.read(drawingServiceProvider.notifier).fetchMaterials();
-    final listImagePattern = {};
+    final Map<int, dynamic> listImagePattern = {};
 
     await Future.forEach(materials, (material) async {
       if (material.type == TypeMaterial.pattern) {
@@ -29,9 +29,10 @@ class MaterialsController extends _$MaterialsController {
         });
       }
     });
-    print(listImagePattern);
+
     return DrawMaterial(
       currentMaterial: materials[0],
+      listImagePattern: listImagePattern.isEmpty ? null : listImagePattern,
       materials: [
         materials[0].copyWith(isActive: true),
         ...materials.skip(1).toList(),
@@ -39,7 +40,7 @@ class MaterialsController extends _$MaterialsController {
     );
   }
 
-  void handleChangeColor(int indexColorActive, final pageChangeReason) {
+  void handleChangeMaterialChild(int indexColorActive, final pageChangeReason) {
     state = AsyncData(
       state.value!.copyWith(
         currentMaterial: state.value!.currentMaterial

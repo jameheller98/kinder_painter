@@ -13,6 +13,7 @@ _$_Paintbrush _$$_PaintbrushFromJson(Map<String, dynamic> json) =>
           : Stroke.fromJson(json['stroke'] as Map<String, dynamic>),
       fill: _$JsonConverterFromJson<int, Color>(
           json['fill'], const ColorJsonConverter().fromJson),
+      idImagePattern: json['idImagePattern'] as int?,
       type: $enumDecodeNullable(_$TypePaintbrushEnumMap, json['type']) ??
           TypePaintbrush.crayon,
       blendMode: $enumDecodeNullable(_$BlendModeEnumMap, json['blendMode']) ??
@@ -24,6 +25,7 @@ Map<String, dynamic> _$$_PaintbrushToJson(_$_Paintbrush instance) =>
       'stroke': instance.stroke,
       'fill': _$JsonConverterToJson<int, Color>(
           instance.fill, const ColorJsonConverter().toJson),
+      'idImagePattern': instance.idImagePattern,
       'type': _$TypePaintbrushEnumMap[instance.type]!,
       'blendMode': _$BlendModeEnumMap[instance.blendMode]!,
     };

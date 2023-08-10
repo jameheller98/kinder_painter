@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import 'package:master_source_flutter/src/features/drawing/domain/paintbrush.dart';
@@ -8,10 +9,12 @@ class DrawPath extends CustomPainter {
   final List<Offset> points;
   final Paintbrush paintbrush;
   final bool isAntiAlias;
+  final ui.Image? pattern;
 
   const DrawPath({
     required this.points,
     required this.paintbrush,
+    this.pattern,
     this.isAntiAlias = false,
   });
 
@@ -23,6 +26,7 @@ class DrawPath extends CustomPainter {
           stroke: paintbrush.stroke,
           points: points,
           blendMode: paintbrush.blendMode,
+          pattern: pattern,
           isAntiAlias: isAntiAlias,
         ).paint(canvas, size);
       } else {
@@ -30,6 +34,7 @@ class DrawPath extends CustomPainter {
           stroke: paintbrush.stroke,
           point: points[0],
           blendMode: paintbrush.blendMode,
+          pattern: pattern,
           isAntiAlias: isAntiAlias,
         ).paint(canvas, size);
       }
@@ -40,5 +45,6 @@ class DrawPath extends CustomPainter {
   bool shouldRepaint(DrawPath oldDelegate) =>
       points != oldDelegate.points ||
       paintbrush != oldDelegate.paintbrush ||
-      isAntiAlias != oldDelegate.isAntiAlias;
+      isAntiAlias != oldDelegate.isAntiAlias ||
+      pattern != oldDelegate.pattern;
 }

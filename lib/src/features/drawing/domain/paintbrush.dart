@@ -21,6 +21,7 @@ class Paintbrush with _$Paintbrush {
   const factory Paintbrush({
     Stroke? stroke,
     @ColorJsonConverter() Color? fill,
+    int? idImagePattern,
     @Default(TypePaintbrush.crayon) TypePaintbrush type,
     @Default(BlendMode.srcOver) BlendMode blendMode,
   }) = _Paintbrush;

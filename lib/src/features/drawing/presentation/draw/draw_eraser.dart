@@ -15,7 +15,8 @@ class DrawEraser extends CustomPainter {
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round
         ..strokeWidth = 20
-        ..blendMode = BlendMode.clear;
+        ..blendMode = BlendMode.clear
+        ..isAntiAlias = false;
 
       Offset point1 = points[0];
       Offset point2 = points[1];

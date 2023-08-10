@@ -7,7 +7,7 @@ part of 'paintbrush_controller.dart';
 // **************************************************************************
 
 String _$paintbrushControllerHash() =>
-    r'dd5fc5378504414761fddd2187e2d5d6421cc577';
+    r'17d5af8dcb6dd49d5cfc1270b097982c0f069576';
 
 /// See also [PaintbrushController].
 @ProviderFor(PaintbrushController)

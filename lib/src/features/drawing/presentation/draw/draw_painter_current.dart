@@ -15,11 +15,13 @@ class DrawPainterCurrent extends CustomPainter {
   final draw_path.DrawPath currentDrawPath;
   final CharacterDraw characterDraw;
   final Map<String, CharacterDrawPicture?> listPictureCharacterDrawPath;
+  final Map<int, dynamic>? listImagePattern;
 
   const DrawPainterCurrent({
     required this.currentDrawPath,
     required this.characterDraw,
     required this.listPictureCharacterDrawPath,
+    this.listImagePattern,
   });
 
   @override
@@ -59,6 +61,11 @@ class DrawPainterCurrent extends CustomPainter {
         DrawPath(
           points: currentDrawPath.points,
           paintbrush: currentDrawPath.paintbrush,
+          pattern: listImagePattern != null &&
+                  currentDrawPath.paintbrush.idImagePattern != null
+              ? listImagePattern![currentDrawPath.paintbrush.idImagePattern]
+                  ["image"]
+              : null,
         ).paint(canvas, size);
       }
     }
@@ -110,6 +117,11 @@ class DrawPainterCurrent extends CustomPainter {
           DrawPath(
             points: currentDrawPath.points,
             paintbrush: currentDrawPath.paintbrush,
+            pattern: listImagePattern != null &&
+                    currentDrawPath.paintbrush.idImagePattern != null
+                ? listImagePattern![currentDrawPath.paintbrush.idImagePattern]
+                    ["image"]
+                : null,
           ).paint(canvas, size);
         }
       }
@@ -131,5 +143,6 @@ class DrawPainterCurrent extends CustomPainter {
       currentDrawPath != oldDelegate.currentDrawPath ||
       listPictureCharacterDrawPath !=
           oldDelegate.listPictureCharacterDrawPath ||
-      characterDraw != oldDelegate.characterDraw;
+      characterDraw != oldDelegate.characterDraw ||
+      listImagePattern != oldDelegate.listImagePattern;
 }

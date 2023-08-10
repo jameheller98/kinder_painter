@@ -2,6 +2,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:master_source_flutter/src/tables/character_path_table.dart';
+
 class DatabaseConfig {
   static const _databaseName = "KinderPainter.db";
   static const _databaseVersion = 1;
@@ -25,7 +27,7 @@ class DatabaseConfig {
   Future<void> init() async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, _databaseName);
-
+    // databaseFactory.deleteDatabase(path);
     _db = await openDatabase(
       path,
       version: _databaseVersion,
@@ -42,6 +44,7 @@ class DatabaseConfig {
 
 final dbConfig = DatabaseConfig(
   tablesCreateSQL: [
+    CharacterPathTable.createTableSQL
     // CommonTable.createTableSQL,
   ],
 );

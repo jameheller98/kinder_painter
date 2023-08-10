@@ -20,7 +20,7 @@ final sizeCanvasProvider = AutoDisposeProvider<Size>.internal(
 );
 
 typedef SizeCanvasRef = AutoDisposeProviderRef<Size>;
-String _$drawControllerHash() => r'a95d783791c500a3e69595ab5ebe55d41c14bc93';
+String _$drawControllerHash() => r'a46c761e559e7e432de8362d60f37a6a6aa779e2';
 
 /// See also [DrawController].
 @ProviderFor(DrawController)

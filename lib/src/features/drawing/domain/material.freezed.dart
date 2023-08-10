@@ -14,15 +14,23 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Material _$MaterialFromJson(Map<String, dynamic> json) {
+  return _Material.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Material {
   int get id => throw _privateConstructorUsedError;
   TypeMaterial get type => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get isActive => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
   int get indexDrawMaterialActive => throw _privateConstructorUsedError;
   List<DrawColor> get colors => throw _privateConstructorUsedError;
   List<DrawPattern> get patterns => throw _privateConstructorUsedError;
   List<DrawSticker> get stickers => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $MaterialCopyWith<Material> get copyWith =>
       throw _privateConstructorUsedError;
@@ -36,6 +44,8 @@ abstract class $MaterialCopyWith<$Res> {
   $Res call(
       {int id,
       TypeMaterial type,
+      @JsonKey(includeFromJson: false, includeToJson: false) bool isActive,
+      @JsonKey(includeFromJson: false, includeToJson: false)
       int indexDrawMaterialActive,
       List<DrawColor> colors,
       List<DrawPattern> patterns,
@@ -57,6 +67,7 @@ class _$MaterialCopyWithImpl<$Res, $Val extends Material>
   $Res call({
     Object? id = null,
     Object? type = null,
+    Object? isActive = null,
     Object? indexDrawMaterialActive = null,
     Object? colors = null,
     Object? patterns = null,
@@ -71,6 +82,10 @@ class _$MaterialCopyWithImpl<$Res, $Val extends Material>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TypeMaterial,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
       indexDrawMaterialActive: null == indexDrawMaterialActive
           ? _value.indexDrawMaterialActive
           : indexDrawMaterialActive // ignore: cast_nullable_to_non_nullable
@@ -101,6 +116,8 @@ abstract class _$$_MaterialCopyWith<$Res> implements $MaterialCopyWith<$Res> {
   $Res call(
       {int id,
       TypeMaterial type,
+      @JsonKey(includeFromJson: false, includeToJson: false) bool isActive,
+      @JsonKey(includeFromJson: false, includeToJson: false)
       int indexDrawMaterialActive,
       List<DrawColor> colors,
       List<DrawPattern> patterns,
@@ -120,6 +137,7 @@ class __$$_MaterialCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? type = null,
+    Object? isActive = null,
     Object? indexDrawMaterialActive = null,
     Object? colors = null,
     Object? patterns = null,
@@ -134,6 +152,10 @@ class __$$_MaterialCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TypeMaterial,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
       indexDrawMaterialActive: null == indexDrawMaterialActive
           ? _value.indexDrawMaterialActive
           : indexDrawMaterialActive // ignore: cast_nullable_to_non_nullable
@@ -155,12 +177,15 @@ class __$$_MaterialCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_Material extends _Material {
   const _$_Material(
       {required this.id,
       required this.type,
-      required this.indexDrawMaterialActive,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.isActive = false,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.indexDrawMaterialActive = 0,
       final List<DrawColor> colors = const [],
       final List<DrawPattern> patterns = const [],
       final List<DrawSticker> stickers = const []})
@@ -169,11 +194,18 @@ class _$_Material extends _Material {
         _stickers = stickers,
         super._();
 
+  factory _$_Material.fromJson(Map<String, dynamic> json) =>
+      _$$_MaterialFromJson(json);
+
   @override
   final int id;
   @override
   final TypeMaterial type;
   @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final bool isActive;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final int indexDrawMaterialActive;
   final List<DrawColor> _colors;
   @override
@@ -204,7 +236,7 @@ class _$_Material extends _Material {
 
   @override
   String toString() {
-    return 'Material(id: $id, type: $type, indexDrawMaterialActive: $indexDrawMaterialActive, colors: $colors, patterns: $patterns, stickers: $stickers)';
+    return 'Material(id: $id, type: $type, isActive: $isActive, indexDrawMaterialActive: $indexDrawMaterialActive, colors: $colors, patterns: $patterns, stickers: $stickers)';
   }
 
   @override
@@ -214,6 +246,8 @@ class _$_Material extends _Material {
             other is _$_Material &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
             (identical(
                     other.indexDrawMaterialActive, indexDrawMaterialActive) ||
                 other.indexDrawMaterialActive == indexDrawMaterialActive) &&
@@ -222,11 +256,13 @@ class _$_Material extends _Material {
             const DeepCollectionEquality().equals(other._stickers, _stickers));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
       id,
       type,
+      isActive,
       indexDrawMaterialActive,
       const DeepCollectionEquality().hash(_colors),
       const DeepCollectionEquality().hash(_patterns),
@@ -237,23 +273,39 @@ class _$_Material extends _Material {
   @pragma('vm:prefer-inline')
   _$$_MaterialCopyWith<_$_Material> get copyWith =>
       __$$_MaterialCopyWithImpl<_$_Material>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_MaterialToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Material extends Material {
   const factory _Material(
       {required final int id,
       required final TypeMaterial type,
-      required final int indexDrawMaterialActive,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final bool isActive,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final int indexDrawMaterialActive,
       final List<DrawColor> colors,
       final List<DrawPattern> patterns,
       final List<DrawSticker> stickers}) = _$_Material;
   const _Material._() : super._();
+
+  factory _Material.fromJson(Map<String, dynamic> json) = _$_Material.fromJson;
 
   @override
   int get id;
   @override
   TypeMaterial get type;
   @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get isActive;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   int get indexDrawMaterialActive;
   @override
   List<DrawColor> get colors;

@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import 'package:master_source_flutter/src/features/drawing/domain/stroke.dart';
@@ -9,6 +10,7 @@ class DrawStroke extends CustomPainter {
   final BlendMode blendMode;
   final bool isAntiAlias;
   final double ratioScale;
+  final ui.Image? pattern;
 
   const DrawStroke({
     this.stroke,
@@ -17,6 +19,7 @@ class DrawStroke extends CustomPainter {
     this.path,
     this.ratioScale = 1,
     this.isAntiAlias = false,
+    this.pattern,
   });
 
   @override
@@ -30,7 +33,15 @@ class DrawStroke extends CustomPainter {
           ..strokeWidth = stroke!.widthStroke * ratioScale
           ..color = stroke!.color
           ..blendMode = blendMode
-          ..isAntiAlias = isAntiAlias;
+          ..isAntiAlias = isAntiAlias
+          ..shader = pattern != null
+              ? ImageShader(
+                  pattern!,
+                  TileMode.repeated,
+                  TileMode.repeated,
+                  Matrix4.identity().scaled(0.2).storage,
+                )
+              : null;
 
         Offset point1 = points[0];
         Offset point2 = points[1];

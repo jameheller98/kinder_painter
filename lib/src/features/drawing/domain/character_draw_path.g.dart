@@ -11,8 +11,6 @@ _$_CharacterDrawPath _$$_CharacterDrawPathFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       characterPath:
           const PathJsonConverter().fromJson(json['characterPath'] as String),
-      unit8ListImage: const Uint8ListJsonConverter()
-          .fromJson(json['unit8ListImage'] as List<int>?),
       drawPaths: (json['drawPaths'] as List<dynamic>?)
               ?.map((e) => DrawPath.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -29,8 +27,7 @@ Map<String, dynamic> _$$_CharacterDrawPathToJson(
     <String, dynamic>{
       'id': instance.id,
       'characterPath': const PathJsonConverter().toJson(instance.characterPath),
-      'unit8ListImage':
-          const Uint8ListJsonConverter().toJson(instance.unit8ListImage),
+      'image': const ImageJsonConverter().toJson(instance.image),
       'drawPaths': instance.drawPaths,
       'fill': _$JsonConverterToJson<int, Color>(
           instance.fill, const ColorJsonConverter().toJson),

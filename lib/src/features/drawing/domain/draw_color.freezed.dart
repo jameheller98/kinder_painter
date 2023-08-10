@@ -14,12 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+DrawColor _$DrawColorFromJson(Map<String, dynamic> json) {
+  return _DrawColor.fromJson(json);
+}
+
 /// @nodoc
 mixin _$DrawColor {
   int get id => throw _privateConstructorUsedError;
-  @ColorJsonConverter()
+  @ColorHexJsonConverter()
   Color get color => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $DrawColorCopyWith<DrawColor> get copyWith =>
       throw _privateConstructorUsedError;
@@ -30,7 +35,7 @@ abstract class $DrawColorCopyWith<$Res> {
   factory $DrawColorCopyWith(DrawColor value, $Res Function(DrawColor) then) =
       _$DrawColorCopyWithImpl<$Res, DrawColor>;
   @useResult
-  $Res call({int id, @ColorJsonConverter() Color color});
+  $Res call({int id, @ColorHexJsonConverter() Color color});
 }
 
 /// @nodoc
@@ -69,7 +74,7 @@ abstract class _$$_DrawColorCopyWith<$Res> implements $DrawColorCopyWith<$Res> {
       __$$_DrawColorCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, @ColorJsonConverter() Color color});
+  $Res call({int id, @ColorHexJsonConverter() Color color});
 }
 
 /// @nodoc
@@ -100,15 +105,18 @@ class __$$_DrawColorCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_DrawColor implements _DrawColor {
   const _$_DrawColor(
-      {required this.id, @ColorJsonConverter() required this.color});
+      {required this.id, @ColorHexJsonConverter() required this.color});
+
+  factory _$_DrawColor.fromJson(Map<String, dynamic> json) =>
+      _$$_DrawColorFromJson(json);
 
   @override
   final int id;
   @override
-  @ColorJsonConverter()
+  @ColorHexJsonConverter()
   final Color color;
 
   @override
@@ -125,6 +133,7 @@ class _$_DrawColor implements _DrawColor {
             (identical(other.color, color) || other.color == color));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, color);
 
@@ -133,17 +142,27 @@ class _$_DrawColor implements _DrawColor {
   @pragma('vm:prefer-inline')
   _$$_DrawColorCopyWith<_$_DrawColor> get copyWith =>
       __$$_DrawColorCopyWithImpl<_$_DrawColor>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_DrawColorToJson(
+      this,
+    );
+  }
 }
 
 abstract class _DrawColor implements DrawColor {
   const factory _DrawColor(
       {required final int id,
-      @ColorJsonConverter() required final Color color}) = _$_DrawColor;
+      @ColorHexJsonConverter() required final Color color}) = _$_DrawColor;
+
+  factory _DrawColor.fromJson(Map<String, dynamic> json) =
+      _$_DrawColor.fromJson;
 
   @override
   int get id;
   @override
-  @ColorJsonConverter()
+  @ColorHexJsonConverter()
   Color get color;
   @override
   @JsonKey(ignore: true)

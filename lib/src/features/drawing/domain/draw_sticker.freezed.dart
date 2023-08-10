@@ -14,10 +14,15 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+DrawSticker _$DrawStickerFromJson(Map<String, dynamic> json) {
+  return _DrawSticker.fromJson(json);
+}
+
 /// @nodoc
 mixin _$DrawSticker {
   int get id => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $DrawStickerCopyWith<DrawSticker> get copyWith =>
       throw _privateConstructorUsedError;
@@ -90,9 +95,12 @@ class __$$_DrawStickerCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_DrawSticker implements _DrawSticker {
   const _$_DrawSticker({required this.id});
+
+  factory _$_DrawSticker.fromJson(Map<String, dynamic> json) =>
+      _$$_DrawStickerFromJson(json);
 
   @override
   final int id;
@@ -110,6 +118,7 @@ class _$_DrawSticker implements _DrawSticker {
             (identical(other.id, id) || other.id == id));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
@@ -118,10 +127,20 @@ class _$_DrawSticker implements _DrawSticker {
   @pragma('vm:prefer-inline')
   _$$_DrawStickerCopyWith<_$_DrawSticker> get copyWith =>
       __$$_DrawStickerCopyWithImpl<_$_DrawSticker>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_DrawStickerToJson(
+      this,
+    );
+  }
 }
 
 abstract class _DrawSticker implements DrawSticker {
   const factory _DrawSticker({required final int id}) = _$_DrawSticker;
+
+  factory _DrawSticker.fromJson(Map<String, dynamic> json) =
+      _$_DrawSticker.fromJson;
 
   @override
   int get id;

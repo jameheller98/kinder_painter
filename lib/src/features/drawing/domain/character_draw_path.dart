@@ -1,7 +1,6 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:master_source_flutter/src/features/drawing/domain/draw_path.dart';
@@ -16,7 +15,9 @@ class CharacterDrawPath with _$CharacterDrawPath {
   const factory CharacterDrawPath({
     required String id,
     @PathJsonConverter() required Path characterPath,
-    @Uint8ListJsonConverter() Uint8List? unit8ListImage,
+    @JsonKey(includeFromJson: false, includeToJson: true)
+    @ImageJsonConverter()
+    ui.Image? image,
     @Default([]) List<DrawPath> drawPaths,
     @ColorJsonConverter() Color? fill,
     Stroke? stroke,

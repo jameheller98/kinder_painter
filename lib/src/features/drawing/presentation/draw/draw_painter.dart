@@ -8,17 +8,21 @@ import 'package:master_source_flutter/src/features/drawing/presentation/draw/dra
 class DrawPainter extends CustomPainter {
   final CharacterDraw characterDraw;
   final Map<String, CharacterDrawPicture?> listPictureCharacterDrawPath;
+  final double xSize;
 
   const DrawPainter({
     required this.characterDraw,
     required this.listPictureCharacterDrawPath,
+    this.xSize = 1,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
+    canvas.scale(xSize, xSize);
+
     if (listPictureCharacterDrawPath["background"] != null) {
       canvas.drawPicture(listPictureCharacterDrawPath["background"]!.picture);
-    } else {
+    } else if (characterDraw.backgroundDrawPaths.image == null) {
       DrawFill(
         fill: Colors.white,
         path: Path()..addRect(Rect.largest),
@@ -29,7 +33,8 @@ class DrawPainter extends CustomPainter {
       if (listPictureCharacterDrawPath[characterDrawPath.id] != null) {
         canvas.drawPicture(
             listPictureCharacterDrawPath[characterDrawPath.id]!.picture);
-      } else if (characterDrawPath.fill != null) {
+      } else if (characterDrawPath.fill != null &&
+          characterDrawPath.image == null) {
         DrawFill(
           fill: characterDrawPath.fill!,
           path: characterDrawPath.characterPath,

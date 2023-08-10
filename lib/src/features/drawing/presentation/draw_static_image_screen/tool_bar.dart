@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:master_source_flutter/src/common_widgets/buttons/icon_button_custom/icon_button_custom.dart';
 import 'package:master_source_flutter/src/constants/theme_model.dart';
 import 'package:master_source_flutter/src/features/drawing/presentation/draw_controller.dart';
+import 'package:master_source_flutter/src/features/drawing/presentation/draw_static_image_screen/tool_material.dart';
 import 'package:master_source_flutter/src/features/drawing/presentation/scale_pan_controller.dart';
 
 class ToolBar extends ConsumerWidget {
@@ -36,12 +37,16 @@ class ToolBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final modeLeft = ref.watch(modeToolLeftStateProvider);
     final modeRight = ref.watch(modeToolRightStateProvider);
 
     return Container(
       height: 320,
       width: 120,
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 15,
+      ),
       decoration: BoxDecoration(
         color: Colors.amber.shade50,
         borderRadius: BorderRadius.circular(15),
@@ -54,7 +59,9 @@ class ToolBar extends ConsumerWidget {
               IconButtonCustom(
                 onPress: () => handleChangeModeToolLeft(ref),
                 themeName: ThemeNameButtonIcon.blue,
-                svgPictureUrl: 'assets/svgs/paintbrush.svg',
+                svgPictureUrl: modeLeft == ModeToolLeft.brush
+                    ? 'assets/svgs/palette.svg'
+                    : 'assets/svgs/paintbrush.svg',
               ),
               const SizedBox(width: 10),
               IconButtonCustom(
@@ -65,6 +72,18 @@ class ToolBar extends ConsumerWidget {
                 svgPictureUrl: 'assets/svgs/move.svg',
               ),
             ],
+          ),
+          const SizedBox(height: 15),
+          const Expanded(
+            child: ToolMaterial(),
+          ),
+          const SizedBox(height: 15),
+          IconButtonCustom(
+            onPress: () => ref
+                .read(drawControllerProvider.notifier)
+                .handleSaveImage(context),
+            themeName: ThemeNameButtonIcon.blue,
+            svgPictureUrl: 'assets/svgs/palette.svg',
           ),
         ],
       ),

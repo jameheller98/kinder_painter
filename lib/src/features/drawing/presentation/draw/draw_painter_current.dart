@@ -7,6 +7,7 @@ import 'package:master_source_flutter/src/features/drawing/domain/draw_path.dart
 import 'package:master_source_flutter/src/features/drawing/domain/paintbrush.dart';
 import 'package:master_source_flutter/src/features/drawing/presentation/draw/draw_eraser.dart';
 import 'package:master_source_flutter/src/features/drawing/presentation/draw/draw_fill.dart';
+import 'package:master_source_flutter/src/features/drawing/presentation/draw/draw_image_previous.dart';
 import 'package:master_source_flutter/src/features/drawing/presentation/draw/draw_path.dart';
 import 'package:master_source_flutter/src/features/drawing/presentation/draw/draw_stroke.dart';
 
@@ -33,6 +34,11 @@ class DrawPainterCurrent extends CustomPainter {
         Offset.zero & size,
         Paint(),
       );
+    }
+
+    if (characterDraw.backgroundDrawPaths.image != null) {
+      DrawImagePrevious(previousImage: characterDraw.backgroundDrawPaths.image!)
+          .paint(canvas, size);
     }
 
     if (listPictureCharacterDrawPath["background"] != null) {

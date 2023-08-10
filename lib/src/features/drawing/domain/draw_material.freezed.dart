@@ -17,6 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$DrawMaterial {
   Material get currentMaterial => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<Map<String, dynamic>>? get listImagePattern =>
+      throw _privateConstructorUsedError;
   List<Material> get materials => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +33,11 @@ abstract class $DrawMaterialCopyWith<$Res> {
           DrawMaterial value, $Res Function(DrawMaterial) then) =
       _$DrawMaterialCopyWithImpl<$Res, DrawMaterial>;
   @useResult
-  $Res call({Material currentMaterial, List<Material> materials});
+  $Res call(
+      {Material currentMaterial,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      List<Map<String, dynamic>>? listImagePattern,
+      List<Material> materials});
 
   $MaterialCopyWith<$Res> get currentMaterial;
 }
@@ -49,6 +56,7 @@ class _$DrawMaterialCopyWithImpl<$Res, $Val extends DrawMaterial>
   @override
   $Res call({
     Object? currentMaterial = null,
+    Object? listImagePattern = freezed,
     Object? materials = null,
   }) {
     return _then(_value.copyWith(
@@ -56,6 +64,10 @@ class _$DrawMaterialCopyWithImpl<$Res, $Val extends DrawMaterial>
           ? _value.currentMaterial
           : currentMaterial // ignore: cast_nullable_to_non_nullable
               as Material,
+      listImagePattern: freezed == listImagePattern
+          ? _value.listImagePattern
+          : listImagePattern // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>?,
       materials: null == materials
           ? _value.materials
           : materials // ignore: cast_nullable_to_non_nullable
@@ -80,7 +92,11 @@ abstract class _$$_DrawMaterialCopyWith<$Res>
       __$$_DrawMaterialCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Material currentMaterial, List<Material> materials});
+  $Res call(
+      {Material currentMaterial,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      List<Map<String, dynamic>>? listImagePattern,
+      List<Material> materials});
 
   @override
   $MaterialCopyWith<$Res> get currentMaterial;
@@ -98,6 +114,7 @@ class __$$_DrawMaterialCopyWithImpl<$Res>
   @override
   $Res call({
     Object? currentMaterial = null,
+    Object? listImagePattern = freezed,
     Object? materials = null,
   }) {
     return _then(_$_DrawMaterial(
@@ -105,6 +122,10 @@ class __$$_DrawMaterialCopyWithImpl<$Res>
           ? _value.currentMaterial
           : currentMaterial // ignore: cast_nullable_to_non_nullable
               as Material,
+      listImagePattern: freezed == listImagePattern
+          ? _value._listImagePattern
+          : listImagePattern // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>?,
       materials: null == materials
           ? _value._materials
           : materials // ignore: cast_nullable_to_non_nullable
@@ -117,11 +138,27 @@ class __$$_DrawMaterialCopyWithImpl<$Res>
 
 class _$_DrawMaterial implements _DrawMaterial {
   const _$_DrawMaterial(
-      {required this.currentMaterial, required final List<Material> materials})
-      : _materials = materials;
+      {required this.currentMaterial,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final List<Map<String, dynamic>>? listImagePattern,
+      required final List<Material> materials})
+      : _listImagePattern = listImagePattern,
+        _materials = materials;
 
   @override
   final Material currentMaterial;
+  final List<Map<String, dynamic>>? _listImagePattern;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<Map<String, dynamic>>? get listImagePattern {
+    final value = _listImagePattern;
+    if (value == null) return null;
+    if (_listImagePattern is EqualUnmodifiableListView)
+      return _listImagePattern;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   final List<Material> _materials;
   @override
   List<Material> get materials {
@@ -132,7 +169,7 @@ class _$_DrawMaterial implements _DrawMaterial {
 
   @override
   String toString() {
-    return 'DrawMaterial(currentMaterial: $currentMaterial, materials: $materials)';
+    return 'DrawMaterial(currentMaterial: $currentMaterial, listImagePattern: $listImagePattern, materials: $materials)';
   }
 
   @override
@@ -143,11 +180,16 @@ class _$_DrawMaterial implements _DrawMaterial {
             (identical(other.currentMaterial, currentMaterial) ||
                 other.currentMaterial == currentMaterial) &&
             const DeepCollectionEquality()
+                .equals(other._listImagePattern, _listImagePattern) &&
+            const DeepCollectionEquality()
                 .equals(other._materials, _materials));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, currentMaterial,
+  int get hashCode => Object.hash(
+      runtimeType,
+      currentMaterial,
+      const DeepCollectionEquality().hash(_listImagePattern),
       const DeepCollectionEquality().hash(_materials));
 
   @JsonKey(ignore: true)
@@ -160,10 +202,15 @@ class _$_DrawMaterial implements _DrawMaterial {
 abstract class _DrawMaterial implements DrawMaterial {
   const factory _DrawMaterial(
       {required final Material currentMaterial,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final List<Map<String, dynamic>>? listImagePattern,
       required final List<Material> materials}) = _$_DrawMaterial;
 
   @override
   Material get currentMaterial;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<Map<String, dynamic>>? get listImagePattern;
   @override
   List<Material> get materials;
   @override

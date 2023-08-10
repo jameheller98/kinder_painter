@@ -2,12 +2,15 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:master_source_flutter/src/common_widgets/common/loading_overlay.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:master_source_flutter/src/constants/stack.dart' as stack;
 import 'package:master_source_flutter/src/features/drawing/application/drawing_service.dart';
+import 'package:master_source_flutter/src/features/drawing/domain/character_draw_path.dart';
+import 'package:master_source_flutter/src/features/drawing/presentation/draw/draw_painter.dart';
 import 'package:master_source_flutter/src/features/drawing/domain/character_draw_picture.dart';
 import 'package:master_source_flutter/src/features/drawing/domain/draw.dart';
 import 'package:master_source_flutter/src/features/drawing/domain/draw_path.dart';
@@ -32,10 +35,7 @@ class DrawController extends _$DrawController {
 
   @override
   Future<Draw> build() async {
-    final characterDraw =
-        await ref.read(drawingServiceProvider.notifier).fetchDrawingCharacter();
-
-    return Draw(characterDraw: characterDraw);
+    return _handleInitDraw();
   }
 
   void handleTouchStart(DragStartDetails details) {
@@ -49,19 +49,19 @@ class DrawController extends _$DrawController {
       ),
     );
 
-    if (paintbrush.type == TypePaintbrush.waterPaint &&
+    if (paintbrush.value!.type == TypePaintbrush.waterPaint &&
         state.value!.characterDraw
                 .lastDrawPathOfCharacter(lastIndexDrawPaths)
                 ?.paintbrush
                 .fill ==
-            paintbrush.fill) {
+            paintbrush.value!.fill) {
       return;
     }
 
     final currentDrawPath = DrawPath(
       id: uuid.v4(),
       indexCharacterPath: lastIndexDrawPaths,
-      paintbrush: paintbrush,
+      paintbrush: paintbrush.value!,
       points: [details.localPosition],
     );
 
@@ -76,7 +76,7 @@ class DrawController extends _$DrawController {
 
     if (!state.value!.isDrawing ||
         state.value!.currentDrawPath == null ||
-        paintbrush.type == TypePaintbrush.waterPaint) {
+        paintbrush.value!.type == TypePaintbrush.waterPaint) {
       return;
     }
 
@@ -113,7 +113,7 @@ class DrawController extends _$DrawController {
     }
   }
 
-  void handleUndoPath() async {
+  void handleUndoPath() {
     late stack.Stack<DrawPath> undidPathStack;
     final stack.Stack<DrawPath> drewPathStack =
         state.value!.drewPathStack!.copyWith();
@@ -145,13 +145,16 @@ class DrawController extends _$DrawController {
             .toList();
     final rectPath = Path()..addRect(Rect.largest);
 
-    final pngImageDrawPathBytes = await handleConvertImage(
+    handleConvertImage(
       characterPath: indexDrewPathCurrent >= 0
           ? characterDrawPath!.characterPath
           : rectPath,
       drawPaths: newDrawPath,
       idCharacterDrawPath:
           indexDrewPathCurrent >= 0 ? characterDrawPath!.id : "background",
+      previousImage: indexDrewPathCurrent >= 0
+          ? characterDrawPath!.image
+          : backgroundDrawPath!.image,
     );
 
     undidPathStack.push(drewPathCurrent);
@@ -169,9 +172,6 @@ class DrawController extends _$DrawController {
                                 .indexOf(characterDrawPath) ==
                             indexDrewPathCurrent
                         ? characterDrawPath.copyWith(
-                            unit8ListImage:
-                                pngImageDrawPathBytes?.buffer.asUint8List() ??
-                                    [] as Uint8List,
                             drawPaths: newDrawPath,
                           )
                         : characterDrawPath,
@@ -180,8 +180,6 @@ class DrawController extends _$DrawController {
               : state.value!.characterDraw.characterDrawPaths,
           backgroundDrawPaths: indexDrewPathCurrent < 0
               ? state.value!.characterDraw.backgroundDrawPaths.copyWith(
-                  unit8ListImage: pngImageDrawPathBytes?.buffer.asUint8List() ??
-                      [] as Uint8List,
                   drawPaths: newDrawPath,
                 )
               : state.value!.characterDraw.backgroundDrawPaths,
@@ -190,7 +188,7 @@ class DrawController extends _$DrawController {
     );
   }
 
-  void handleRedoPath() async {
+  void handleRedoPath() {
     late stack.Stack<DrawPath> drewPathStack;
     final stack.Stack<DrawPath> undidPathStack =
         state.value!.undidPathStack!.copyWith();
@@ -213,13 +211,17 @@ class DrawController extends _$DrawController {
         ? [...characterDrawPath!.drawPaths, undidPathCurrent]
         : [...backgroundDrawPath!.drawPaths, undidPathCurrent];
     final rectPath = Path()..addRect(Rect.largest);
-    final pngImageDrawPathBytes = await handleConvertImage(
+
+    handleConvertImage(
       characterPath: indexUndidPathCurrent >= 0
           ? characterDrawPath!.characterPath
           : rectPath,
       drawPaths: newDrawPath,
       idCharacterDrawPath:
           indexUndidPathCurrent >= 0 ? characterDrawPath!.id : "background",
+      previousImage: indexUndidPathCurrent >= 0
+          ? characterDrawPath!.image
+          : backgroundDrawPath!.image,
     );
 
     drewPathStack.push(undidPathCurrent);
@@ -237,9 +239,6 @@ class DrawController extends _$DrawController {
                                 .indexOf(characterDrawPath) ==
                             indexUndidPathCurrent
                         ? characterDrawPath.copyWith(
-                            unit8ListImage:
-                                pngImageDrawPathBytes?.buffer.asUint8List() ??
-                                    [] as Uint8List,
                             drawPaths: newDrawPath,
                           )
                         : characterDrawPath,
@@ -248,8 +247,6 @@ class DrawController extends _$DrawController {
               : state.value!.characterDraw.characterDrawPaths,
           backgroundDrawPaths: indexUndidPathCurrent < 0
               ? state.value!.characterDraw.backgroundDrawPaths.copyWith(
-                  unit8ListImage: pngImageDrawPathBytes?.buffer.asUint8List() ??
-                      [] as Uint8List,
                   drawPaths: newDrawPath,
                 )
               : state.value!.characterDraw.backgroundDrawPaths,
@@ -258,40 +255,40 @@ class DrawController extends _$DrawController {
     );
   }
 
-  ui.Picture canvasToPicture(
-      {required Path characterPath, required List<DrawPath> drawPaths}) {
+  ui.Picture canvasToPicture({
+    required Path characterPath,
+    required List<DrawPath> drawPaths,
+    ui.Image? previousImage,
+    double xSize = 1,
+  }) {
     final Size sizeCanvas = ref.read(sizeCanvasProvider);
     ui.PictureRecorder recorder = ui.PictureRecorder();
     Canvas canvas = Canvas(recorder);
     DrawImageToSave drawPainter = DrawImageToSave(
       characterPath: characterPath,
       drawPaths: drawPaths,
+      previousImage: previousImage,
+      xSize: xSize,
     );
-    drawPainter.paint(canvas, sizeCanvas);
+    drawPainter.paint(canvas, sizeCanvas * xSize);
     return recorder.endRecording();
   }
 
-  Future<ui.Image>? bytesToImage(Uint8List imgBytes) async {
-    ui.Codec codec = await ui.instantiateImageCodec(imgBytes);
-    ui.FrameInfo frame;
-    try {
-      frame = await codec.getNextFrame();
-    } finally {
-      codec.dispose();
-    }
-    return frame.image;
-  }
-
-  Future<ByteData?> handleConvertImage({
+  void handleConvertImage({
     required Path characterPath,
     required List<DrawPath> drawPaths,
     required String idCharacterDrawPath,
-  }) async {
-    final Size sizeCanvas = ref.read(sizeCanvasProvider);
+    ui.Image? previousImage,
+  }) {
     final ui.Picture pictureDrawPath = canvasToPicture(
       characterPath: characterPath,
       drawPaths: drawPaths,
+      previousImage: previousImage,
     );
+
+    if (listPictureCharacterDrawPath[idCharacterDrawPath] != null) {
+      listPictureCharacterDrawPath[idCharacterDrawPath]!.picture.dispose();
+    }
 
     listPictureCharacterDrawPath.addEntries(
       {
@@ -301,16 +298,207 @@ class DrawController extends _$DrawController {
         ),
       }.entries,
     );
-
-    return pictureDrawPath
-        .toImageSync(
-          (sizeCanvas.width * 2).floor(),
-          (sizeCanvas.height * 2).floor(),
-        )
-        .toByteData(format: ui.ImageByteFormat.png);
   }
 
-  void _handleAddNewDrawPathToCharacterPath() async {
+  Future<Map<String, dynamic>?> handleSaveImage(BuildContext context) async {
+    LoadingOverlay.of(context).show();
+
+    ui.Picture? picture;
+    ui.Image? image;
+
+    try {
+      final Size sizeCanvas = ref.read(sizeCanvasProvider);
+
+      ui.PictureRecorder recorder = ui.PictureRecorder();
+      Canvas canvas = Canvas(recorder);
+
+      final drawPainter = DrawPainter(
+        characterDraw: state.value!.characterDraw,
+        listPictureCharacterDrawPath: listPictureCharacterDrawPath,
+        xSize: 4,
+      );
+
+      drawPainter.paint(canvas, sizeCanvas * 4);
+      picture = recorder.endRecording();
+      image = await picture.toImage(
+        (sizeCanvas.width * 4).floor(),
+        (sizeCanvas.height * 4).floor(),
+      );
+
+      final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+
+      if (bytes != null) {
+        final fileImage = await _handleSaveCharacterPath();
+
+        await ref.read(drawingServiceProvider.notifier).handleSaveImageCanvas({
+          "fileImage": fileImage,
+          "mainImage": bytes.buffer.asUint8List(),
+          "idImage": state.value!.characterDraw.id,
+        });
+
+        _handleClearPictureAndImage();
+
+        final initDraw = await _handleInitDraw();
+
+        state = AsyncData(initDraw);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      if (picture != null) {
+        picture.dispose();
+      }
+
+      if (image != null) {
+        image.dispose();
+      }
+
+      LoadingOverlay.of(context).hide();
+    }
+
+    return null;
+  }
+
+  Future<Map<String, Uint8List>?> _handleSaveCharacterPath() async {
+    if (listPictureCharacterDrawPath.isEmpty) return null;
+
+    final Size sizeCanvas = ref.read(sizeCanvasProvider);
+    final Map<String, dynamic> arrTemp = {};
+    final Map<String, Uint8List> data = {};
+
+    listPictureCharacterDrawPath.forEach((key, value) {
+      if (key == "background") {
+        arrTemp.addEntries({
+          "background": {
+            "characterPath": Path()..addRect(Rect.largest),
+            "drawPaths":
+                state.value!.characterDraw.backgroundDrawPaths.drawPaths,
+            "previousImage":
+                state.value!.characterDraw.backgroundDrawPaths.image,
+          },
+        }.entries);
+      } else {
+        final currentCharacterDrawPaths =
+            state.value!.characterDraw.characterDrawPaths.firstWhere(
+          (element) => element.id == key,
+          orElse: () => CharacterDrawPath(
+            id: '0',
+            characterPath: Path(),
+          ),
+        );
+        if (currentCharacterDrawPaths.id != '0') {
+          arrTemp.addEntries({
+            key: {
+              "characterPath": currentCharacterDrawPaths.characterPath,
+              "drawPaths": currentCharacterDrawPaths.drawPaths,
+              "previousImage": currentCharacterDrawPaths.image,
+            },
+          }.entries);
+        }
+      }
+    });
+
+    await Future.forEach(arrTemp.entries, (element) async {
+      ui.Image? image;
+      ui.Picture? picture;
+      try {
+        picture = canvasToPicture(
+          characterPath: element.value["characterPath"],
+          drawPaths: element.value["drawPaths"],
+          previousImage: element.value["previousImage"],
+          xSize: 4,
+        );
+        image = await picture.toImage(
+          (sizeCanvas.width * 4).floor(),
+          (sizeCanvas.height * 4).floor(),
+        );
+
+        final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+
+        if (bytes != null) {
+          data.addEntries({element.key: bytes.buffer.asUint8List()}.entries);
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+      } finally {
+        if (picture != null) {
+          picture.dispose();
+        }
+        if (image != null) {
+          image.dispose();
+        }
+      }
+    });
+
+    arrTemp.clear();
+
+    return data;
+  }
+
+  Future<Draw> _handleInitDraw() async {
+    final characterDraw =
+        await ref.read(drawingServiceProvider.notifier).fetchDrawingCharacter();
+    final images = await ref
+        .read(drawingServiceProvider.notifier)
+        .fetchImagesCharacterPath(characterDraw.id);
+
+    final initDraw = Draw(
+      characterDraw: characterDraw.copyWith(
+        backgroundDrawPaths: characterDraw.backgroundDrawPaths.copyWith(
+          image: images != null && images["background"] != null
+              ? images["background"]
+              : null,
+        ),
+        characterDrawPaths: characterDraw.characterDrawPaths.map((e) {
+          return images != null ? e.copyWith(image: images[e.id]) : e;
+        }).toList(),
+      ),
+    );
+
+    if (initDraw.characterDraw.backgroundDrawPaths.image != null) {
+      handleConvertImage(
+        characterPath: Path()..addRect(Rect.largest),
+        drawPaths: [],
+        idCharacterDrawPath: "background",
+        previousImage: initDraw.characterDraw.backgroundDrawPaths.image,
+      );
+    }
+
+    initDraw.characterDraw.characterDrawPaths.forEach((element) {
+      if (element.image != null) {
+        handleConvertImage(
+          characterPath: element.characterPath,
+          drawPaths: [],
+          idCharacterDrawPath: element.id,
+          previousImage: element.image,
+        );
+      }
+    });
+
+    return initDraw;
+  }
+
+  void _handleClearPictureAndImage() {
+    if (listPictureCharacterDrawPath.isNotEmpty) {
+      listPictureCharacterDrawPath.entries.forEach((element) {
+        element.value.picture.dispose();
+      });
+
+      listPictureCharacterDrawPath.clear();
+    }
+
+    if (state.value!.characterDraw.backgroundDrawPaths.image != null) {
+      state.value!.characterDraw.backgroundDrawPaths.image!.dispose();
+    }
+
+    state.value!.characterDraw.characterDrawPaths.forEach((element) {
+      if (element.image != null) {
+        element.image!.dispose();
+      }
+    });
+  }
+
+  void _handleAddNewDrawPathToCharacterPath() {
     final newCharacterDrawPath = state.value!.characterDraw
         .characterDrawPaths[state.value!.currentDrawPath!.indexCharacterPath]
         .copyWith(
@@ -325,10 +513,11 @@ class DrawController extends _$DrawController {
       ],
     );
 
-    final pngImageDrawPathBytes = await handleConvertImage(
+    handleConvertImage(
       characterPath: newCharacterDrawPath.characterPath,
       drawPaths: newCharacterDrawPath.drawPaths,
       idCharacterDrawPath: newCharacterDrawPath.id,
+      previousImage: newCharacterDrawPath.image,
     );
 
     if (state.value!.currentDrawPath != null &&
@@ -343,10 +532,7 @@ class DrawController extends _$DrawController {
                     state.value!.currentDrawPath!.indexCharacterPath,
                   )
                   .toList(),
-              newCharacterDrawPath.copyWith(
-                unit8ListImage: pngImageDrawPathBytes?.buffer.asUint8List() ??
-                    [] as Uint8List,
-              ),
+              newCharacterDrawPath,
               ...state.value!.characterDraw.characterDrawPaths
                   .skip(
                     state.value!.currentDrawPath!.indexCharacterPath + 1,
@@ -360,7 +546,7 @@ class DrawController extends _$DrawController {
     }
   }
 
-  void _handleAddNewDrawPathToBackground() async {
+  void _handleAddNewDrawPathToBackground() {
     final newBackgroundDrawPath =
         state.value!.characterDraw.backgroundDrawPaths.copyWith(
       drawPaths: [
@@ -369,19 +555,17 @@ class DrawController extends _$DrawController {
       ],
     );
 
-    final pngImageDrawPathBytes = await handleConvertImage(
+    handleConvertImage(
       characterPath: Path()..addRect(Rect.largest),
       drawPaths: newBackgroundDrawPath.drawPaths,
       idCharacterDrawPath: "background",
+      previousImage: newBackgroundDrawPath.image,
     );
 
     state = AsyncData(state.value!.copyWith(
       isDrawing: false,
       characterDraw: state.value!.characterDraw.copyWith(
-        backgroundDrawPaths: newBackgroundDrawPath.copyWith(
-          unit8ListImage:
-              pngImageDrawPathBytes?.buffer.asUint8List() ?? [] as Uint8List,
-        ),
+        backgroundDrawPaths: newBackgroundDrawPath,
       ),
       currentDrawPath: null,
     ));

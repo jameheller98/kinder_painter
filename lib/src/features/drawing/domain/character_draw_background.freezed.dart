@@ -21,8 +21,8 @@ CharacterDrawBackground _$CharacterDrawBackgroundFromJson(
 
 /// @nodoc
 mixin _$CharacterDrawBackground {
-  @Uint8ListJsonConverter()
-  Uint8List? get unit8ListImage => throw _privateConstructorUsedError;
+  @ImageJsonConverter()
+  Image? get image => throw _privateConstructorUsedError;
   List<DrawPath> get drawPaths => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,9 +37,7 @@ abstract class $CharacterDrawBackgroundCopyWith<$Res> {
           $Res Function(CharacterDrawBackground) then) =
       _$CharacterDrawBackgroundCopyWithImpl<$Res, CharacterDrawBackground>;
   @useResult
-  $Res call(
-      {@Uint8ListJsonConverter() Uint8List? unit8ListImage,
-      List<DrawPath> drawPaths});
+  $Res call({@ImageJsonConverter() Image? image, List<DrawPath> drawPaths});
 }
 
 /// @nodoc
@@ -56,14 +54,14 @@ class _$CharacterDrawBackgroundCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? unit8ListImage = freezed,
+    Object? image = freezed,
     Object? drawPaths = null,
   }) {
     return _then(_value.copyWith(
-      unit8ListImage: freezed == unit8ListImage
-          ? _value.unit8ListImage
-          : unit8ListImage // ignore: cast_nullable_to_non_nullable
-              as Uint8List?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as Image?,
       drawPaths: null == drawPaths
           ? _value.drawPaths
           : drawPaths // ignore: cast_nullable_to_non_nullable
@@ -80,9 +78,7 @@ abstract class _$$_CharacterDrawBackgroundCopyWith<$Res>
       __$$_CharacterDrawBackgroundCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@Uint8ListJsonConverter() Uint8List? unit8ListImage,
-      List<DrawPath> drawPaths});
+  $Res call({@ImageJsonConverter() Image? image, List<DrawPath> drawPaths});
 }
 
 /// @nodoc
@@ -97,14 +93,14 @@ class __$$_CharacterDrawBackgroundCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? unit8ListImage = freezed,
+    Object? image = freezed,
     Object? drawPaths = null,
   }) {
     return _then(_$_CharacterDrawBackground(
-      unit8ListImage: freezed == unit8ListImage
-          ? _value.unit8ListImage
-          : unit8ListImage // ignore: cast_nullable_to_non_nullable
-              as Uint8List?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as Image?,
       drawPaths: null == drawPaths
           ? _value._drawPaths
           : drawPaths // ignore: cast_nullable_to_non_nullable
@@ -117,7 +113,7 @@ class __$$_CharacterDrawBackgroundCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CharacterDrawBackground implements _CharacterDrawBackground {
   const _$_CharacterDrawBackground(
-      {@Uint8ListJsonConverter() this.unit8ListImage,
+      {@ImageJsonConverter() this.image,
       final List<DrawPath> drawPaths = const []})
       : _drawPaths = drawPaths;
 
@@ -125,8 +121,8 @@ class _$_CharacterDrawBackground implements _CharacterDrawBackground {
       _$$_CharacterDrawBackgroundFromJson(json);
 
   @override
-  @Uint8ListJsonConverter()
-  final Uint8List? unit8ListImage;
+  @ImageJsonConverter()
+  final Image? image;
   final List<DrawPath> _drawPaths;
   @override
   @JsonKey()
@@ -138,7 +134,7 @@ class _$_CharacterDrawBackground implements _CharacterDrawBackground {
 
   @override
   String toString() {
-    return 'CharacterDrawBackground(unit8ListImage: $unit8ListImage, drawPaths: $drawPaths)';
+    return 'CharacterDrawBackground(image: $image, drawPaths: $drawPaths)';
   }
 
   @override
@@ -146,8 +142,7 @@ class _$_CharacterDrawBackground implements _CharacterDrawBackground {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CharacterDrawBackground &&
-            const DeepCollectionEquality()
-                .equals(other.unit8ListImage, unit8ListImage) &&
+            (identical(other.image, image) || other.image == image) &&
             const DeepCollectionEquality()
                 .equals(other._drawPaths, _drawPaths));
   }
@@ -155,9 +150,7 @@ class _$_CharacterDrawBackground implements _CharacterDrawBackground {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(unit8ListImage),
-      const DeepCollectionEquality().hash(_drawPaths));
+      runtimeType, image, const DeepCollectionEquality().hash(_drawPaths));
 
   @JsonKey(ignore: true)
   @override
@@ -177,15 +170,15 @@ class _$_CharacterDrawBackground implements _CharacterDrawBackground {
 
 abstract class _CharacterDrawBackground implements CharacterDrawBackground {
   const factory _CharacterDrawBackground(
-      {@Uint8ListJsonConverter() final Uint8List? unit8ListImage,
+      {@ImageJsonConverter() final Image? image,
       final List<DrawPath> drawPaths}) = _$_CharacterDrawBackground;
 
   factory _CharacterDrawBackground.fromJson(Map<String, dynamic> json) =
       _$_CharacterDrawBackground.fromJson;
 
   @override
-  @Uint8ListJsonConverter()
-  Uint8List? get unit8ListImage;
+  @ImageJsonConverter()
+  Image? get image;
   @override
   List<DrawPath> get drawPaths;
   @override

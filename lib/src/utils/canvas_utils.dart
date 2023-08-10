@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 
 import 'package:master_source_flutter/src/features/drawing/domain/point.dart';
@@ -203,5 +207,28 @@ class CanvasUtils {
     }
 
     return points;
+  }
+
+  static Future<ui.Image> bytesToImage(Uint8List imgBytes) async {
+    ui.Codec codec = await ui.instantiateImageCodec(imgBytes);
+    ui.FrameInfo frame;
+    try {
+      frame = await codec.getNextFrame();
+    } finally {
+      codec.dispose();
+    }
+    return frame.image;
+  }
+
+  static Future<ui.Image> getImageUrl(String path) async {
+    var completer = Completer<ImageInfo>();
+    var img = NetworkImage(path);
+    img
+        .resolve(const ImageConfiguration())
+        .addListener(ImageStreamListener((info, _) {
+      completer.complete(info);
+    }));
+    ImageInfo imageInfo = await completer.future;
+    return imageInfo.image;
   }
 }

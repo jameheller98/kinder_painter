@@ -1,4 +1,5 @@
-import 'package:flutter/services.dart';
+import 'dart:ui';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:master_source_flutter/src/features/drawing/domain/draw_path.dart';
@@ -10,7 +11,7 @@ part 'character_draw_background.g.dart';
 @freezed
 class CharacterDrawBackground with _$CharacterDrawBackground {
   const factory CharacterDrawBackground({
-    @Uint8ListJsonConverter() Uint8List? unit8ListImage,
+    @ImageJsonConverter() Image? image,
     @Default([]) List<DrawPath> drawPaths,
   }) = _CharacterDrawBackground;
 

@@ -1,6 +1,6 @@
 import 'package:master_source_flutter/src/api/api.dart';
 
-class CommonAPI extends API {
+class DrawingAPI extends API {
   Uri common(String param) => super.buildUri(
         endpoint: 'common',
         parametersBuilder: () => paramQueryParameters(null),

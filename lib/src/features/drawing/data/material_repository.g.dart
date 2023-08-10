@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'paintbrush_controller.dart';
+part of 'material_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$paintbrushControllerHash() =>
-    r'dd5fc5378504414761fddd2187e2d5d6421cc577';
+String _$materialRepositoryHash() =>
+    r'ca86319a4d5111174d10e760d830ad2ae2c90dea';
 
-/// See also [PaintbrushController].
-@ProviderFor(PaintbrushController)
-final paintbrushControllerProvider =
-    AsyncNotifierProvider<PaintbrushController, Paintbrush>.internal(
-  PaintbrushController.new,
-  name: r'paintbrushControllerProvider',
+/// See also [materialRepository].
+@ProviderFor(materialRepository)
+final materialRepositoryProvider =
+    AutoDisposeProvider<HttpMaterialRepository>.internal(
+  materialRepository,
+  name: r'materialRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$paintbrushControllerHash,
+      : _$materialRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PaintbrushController = AsyncNotifier<Paintbrush>;
+typedef MaterialRepositoryRef = AutoDisposeProviderRef<HttpMaterialRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member

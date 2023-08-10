@@ -12,25 +12,36 @@ part 'paintbrush_controller.g.dart';
 @Riverpod(keepAlive: true)
 class PaintbrushController extends _$PaintbrushController {
   @override
-  Paintbrush build() {
-    return const Paintbrush(stroke: Stroke());
+  Future<Paintbrush> build() async {
+    final materialController =
+        await ref.read(materialsControllerProvider.future);
+
+    return Paintbrush(
+      stroke: Stroke(
+        color: materialController.currentMaterial.getColor,
+      ),
+    );
   }
 
   void changePaintbrushByMaterial(material.Material material) {
-    switch (state.type) {
+    switch (state.value!.type) {
       case TypePaintbrush.crayon:
       case TypePaintbrush.pencil:
       case TypePaintbrush.paintBrush:
       case TypePaintbrush.waterPen:
-        state = state.copyWith(
-          stroke: state.stroke!.copyWith(
-            color: material.getColor,
+        state = AsyncData(
+          state.value!.copyWith(
+            stroke: state.value!.stroke!.copyWith(
+              color: material.getColor,
+            ),
           ),
         );
         break;
       case TypePaintbrush.waterPaint:
-        state = state.copyWith(
-          fill: material.getColor,
+        state = AsyncData(
+          state.value!.copyWith(
+            fill: material.getColor,
+          ),
         );
         break;
       case TypePaintbrush.eraser:
@@ -38,9 +49,9 @@ class PaintbrushController extends _$PaintbrushController {
     }
   }
 
-  void handleChangePaintbrush(TypePaintbrush type) {
-    final currentMaterial = ref.read(
-      materialsControllerProvider.select(
+  void handleChangePaintbrush(TypePaintbrush type) async {
+    final currentMaterial = await ref.read(
+      materialsControllerProvider.selectAsync(
         (value) => value.currentMaterial,
       ),
     );
@@ -54,35 +65,47 @@ class PaintbrushController extends _$PaintbrushController {
 
     switch (type) {
       case TypePaintbrush.crayon:
-        state = newPaintbrush.copyWith(
-          stroke: newPaintbrush.stroke!.copyWith(widthStroke: 6),
+        state = AsyncData(
+          newPaintbrush.copyWith(
+            stroke: newPaintbrush.stroke!.copyWith(widthStroke: 6),
+          ),
         );
         break;
       case TypePaintbrush.pencil:
-        state = newPaintbrush.copyWith(
-          stroke: newPaintbrush.stroke!.copyWith(widthStroke: 3),
-          fill: null,
+        state = AsyncData(
+          newPaintbrush.copyWith(
+            stroke: newPaintbrush.stroke!.copyWith(widthStroke: 3),
+            fill: null,
+          ),
         );
         break;
       case TypePaintbrush.paintBrush:
-        state = newPaintbrush.copyWith(
-          stroke: newPaintbrush.stroke!.copyWith(widthStroke: 12),
-          fill: null,
+        state = AsyncData(
+          newPaintbrush.copyWith(
+            stroke: newPaintbrush.stroke!.copyWith(widthStroke: 12),
+            fill: null,
+          ),
         );
         break;
       case TypePaintbrush.waterPen:
-        state = newPaintbrush.copyWith(
-          stroke: newPaintbrush.stroke!.copyWith(widthStroke: 8),
-          fill: null,
+        state = AsyncData(
+          newPaintbrush.copyWith(
+            stroke: newPaintbrush.stroke!.copyWith(widthStroke: 8),
+            fill: null,
+          ),
         );
         break;
       case TypePaintbrush.waterPaint:
-        state = newPaintbrush.copyWith(stroke: null);
+        state = AsyncData(
+          newPaintbrush.copyWith(stroke: null),
+        );
       case TypePaintbrush.eraser:
-        state = newPaintbrush.copyWith(
-          fill: null,
-          stroke: null,
-          blendMode: BlendMode.clear,
+        state = AsyncData(
+          newPaintbrush.copyWith(
+            fill: null,
+            stroke: null,
+            blendMode: BlendMode.clear,
+          ),
         );
         break;
     }

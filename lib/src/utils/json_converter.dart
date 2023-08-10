@@ -1,9 +1,11 @@
-import 'dart:typed_data';
+import 'dart:convert';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:master_source_flutter/src/features/drawing/domain/character_draw_background.dart';
 
+import 'package:master_source_flutter/src/constants/color_extensions.dart';
+import 'package:master_source_flutter/src/features/drawing/domain/character_draw_background.dart';
 import 'package:master_source_flutter/src/utils/canvas_utils.dart';
 
 class OffsetJsonConverter extends JsonConverter<Offset, Map<String, dynamic>> {
@@ -54,25 +56,47 @@ class ColorJsonConverter extends JsonConverter<Color, int> {
   }
 }
 
-class Uint8ListJsonConverter extends JsonConverter<Uint8List?, List<int>?> {
-  const Uint8ListJsonConverter();
+class ColorHexJsonConverter extends JsonConverter<Color, String> {
+  const ColorHexJsonConverter();
 
   @override
-  Uint8List? fromJson(List<int>? json) {
-    if (json == null) {
-      return null;
-    }
-
-    return Uint8List.fromList(json);
+  Color fromJson(String json) {
+    return HexColor.fromHex(json);
   }
 
   @override
-  List<int>? toJson(Uint8List? object) {
-    if (object == null) {
-      return null;
+  String toJson(Color object) {
+    return object.toHex();
+  }
+}
+
+class ImageJsonConverter extends JsonConverter<ui.Image?, Future<String?>> {
+  const ImageJsonConverter();
+
+  @override
+  ui.Image? fromJson(Future<String?> json) {
+    return null;
+  }
+
+  @override
+  Future<String?> toJson(ui.Image? object) async {
+    if (object != null) {
+      try {
+        final byteData = await object.toByteData();
+
+        if (byteData != null) {
+          return base64.encode(
+            byteData.buffer.asUint8List(),
+          );
+        }
+      } catch (err) {
+        debugPrint(err.toString());
+      } finally {
+        object.dispose();
+      }
     }
 
-    return object.toList();
+    return null;
   }
 }
 

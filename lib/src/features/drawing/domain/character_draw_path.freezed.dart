@@ -22,12 +22,13 @@ CharacterDrawPath _$CharacterDrawPathFromJson(Map<String, dynamic> json) {
 mixin _$CharacterDrawPath {
   String get id => throw _privateConstructorUsedError;
   @PathJsonConverter()
-  Path get characterPath => throw _privateConstructorUsedError;
-  @Uint8ListJsonConverter()
-  Uint8List? get unit8ListImage => throw _privateConstructorUsedError;
+  ui.Path get characterPath => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: true)
+  @ImageJsonConverter()
+  ui.Image? get image => throw _privateConstructorUsedError;
   List<DrawPath> get drawPaths => throw _privateConstructorUsedError;
   @ColorJsonConverter()
-  Color? get fill => throw _privateConstructorUsedError;
+  ui.Color? get fill => throw _privateConstructorUsedError;
   Stroke? get stroke => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,10 +45,12 @@ abstract class $CharacterDrawPathCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      @PathJsonConverter() Path characterPath,
-      @Uint8ListJsonConverter() Uint8List? unit8ListImage,
+      @PathJsonConverter() ui.Path characterPath,
+      @JsonKey(includeFromJson: false, includeToJson: true)
+      @ImageJsonConverter()
+      ui.Image? image,
       List<DrawPath> drawPaths,
-      @ColorJsonConverter() Color? fill,
+      @ColorJsonConverter() ui.Color? fill,
       Stroke? stroke});
 
   $StrokeCopyWith<$Res>? get stroke;
@@ -68,7 +71,7 @@ class _$CharacterDrawPathCopyWithImpl<$Res, $Val extends CharacterDrawPath>
   $Res call({
     Object? id = null,
     Object? characterPath = null,
-    Object? unit8ListImage = freezed,
+    Object? image = freezed,
     Object? drawPaths = null,
     Object? fill = freezed,
     Object? stroke = freezed,
@@ -81,11 +84,11 @@ class _$CharacterDrawPathCopyWithImpl<$Res, $Val extends CharacterDrawPath>
       characterPath: null == characterPath
           ? _value.characterPath
           : characterPath // ignore: cast_nullable_to_non_nullable
-              as Path,
-      unit8ListImage: freezed == unit8ListImage
-          ? _value.unit8ListImage
-          : unit8ListImage // ignore: cast_nullable_to_non_nullable
-              as Uint8List?,
+              as ui.Path,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as ui.Image?,
       drawPaths: null == drawPaths
           ? _value.drawPaths
           : drawPaths // ignore: cast_nullable_to_non_nullable
@@ -93,7 +96,7 @@ class _$CharacterDrawPathCopyWithImpl<$Res, $Val extends CharacterDrawPath>
       fill: freezed == fill
           ? _value.fill
           : fill // ignore: cast_nullable_to_non_nullable
-              as Color?,
+              as ui.Color?,
       stroke: freezed == stroke
           ? _value.stroke
           : stroke // ignore: cast_nullable_to_non_nullable
@@ -124,10 +127,12 @@ abstract class _$$_CharacterDrawPathCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      @PathJsonConverter() Path characterPath,
-      @Uint8ListJsonConverter() Uint8List? unit8ListImage,
+      @PathJsonConverter() ui.Path characterPath,
+      @JsonKey(includeFromJson: false, includeToJson: true)
+      @ImageJsonConverter()
+      ui.Image? image,
       List<DrawPath> drawPaths,
-      @ColorJsonConverter() Color? fill,
+      @ColorJsonConverter() ui.Color? fill,
       Stroke? stroke});
 
   @override
@@ -147,7 +152,7 @@ class __$$_CharacterDrawPathCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? characterPath = null,
-    Object? unit8ListImage = freezed,
+    Object? image = freezed,
     Object? drawPaths = null,
     Object? fill = freezed,
     Object? stroke = freezed,
@@ -160,11 +165,11 @@ class __$$_CharacterDrawPathCopyWithImpl<$Res>
       characterPath: null == characterPath
           ? _value.characterPath
           : characterPath // ignore: cast_nullable_to_non_nullable
-              as Path,
-      unit8ListImage: freezed == unit8ListImage
-          ? _value.unit8ListImage
-          : unit8ListImage // ignore: cast_nullable_to_non_nullable
-              as Uint8List?,
+              as ui.Path,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as ui.Image?,
       drawPaths: null == drawPaths
           ? _value._drawPaths
           : drawPaths // ignore: cast_nullable_to_non_nullable
@@ -172,7 +177,7 @@ class __$$_CharacterDrawPathCopyWithImpl<$Res>
       fill: freezed == fill
           ? _value.fill
           : fill // ignore: cast_nullable_to_non_nullable
-              as Color?,
+              as ui.Color?,
       stroke: freezed == stroke
           ? _value.stroke
           : stroke // ignore: cast_nullable_to_non_nullable
@@ -187,7 +192,9 @@ class _$_CharacterDrawPath implements _CharacterDrawPath {
   const _$_CharacterDrawPath(
       {required this.id,
       @PathJsonConverter() required this.characterPath,
-      @Uint8ListJsonConverter() this.unit8ListImage,
+      @JsonKey(includeFromJson: false, includeToJson: true)
+      @ImageJsonConverter()
+      this.image,
       final List<DrawPath> drawPaths = const [],
       @ColorJsonConverter() this.fill,
       this.stroke})
@@ -200,10 +207,11 @@ class _$_CharacterDrawPath implements _CharacterDrawPath {
   final String id;
   @override
   @PathJsonConverter()
-  final Path characterPath;
+  final ui.Path characterPath;
   @override
-  @Uint8ListJsonConverter()
-  final Uint8List? unit8ListImage;
+  @JsonKey(includeFromJson: false, includeToJson: true)
+  @ImageJsonConverter()
+  final ui.Image? image;
   final List<DrawPath> _drawPaths;
   @override
   @JsonKey()
@@ -215,13 +223,13 @@ class _$_CharacterDrawPath implements _CharacterDrawPath {
 
   @override
   @ColorJsonConverter()
-  final Color? fill;
+  final ui.Color? fill;
   @override
   final Stroke? stroke;
 
   @override
   String toString() {
-    return 'CharacterDrawPath(id: $id, characterPath: $characterPath, unit8ListImage: $unit8ListImage, drawPaths: $drawPaths, fill: $fill, stroke: $stroke)';
+    return 'CharacterDrawPath(id: $id, characterPath: $characterPath, image: $image, drawPaths: $drawPaths, fill: $fill, stroke: $stroke)';
   }
 
   @override
@@ -232,8 +240,7 @@ class _$_CharacterDrawPath implements _CharacterDrawPath {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.characterPath, characterPath) ||
                 other.characterPath == characterPath) &&
-            const DeepCollectionEquality()
-                .equals(other.unit8ListImage, unit8ListImage) &&
+            (identical(other.image, image) || other.image == image) &&
             const DeepCollectionEquality()
                 .equals(other._drawPaths, _drawPaths) &&
             (identical(other.fill, fill) || other.fill == fill) &&
@@ -242,14 +249,8 @@ class _$_CharacterDrawPath implements _CharacterDrawPath {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      characterPath,
-      const DeepCollectionEquality().hash(unit8ListImage),
-      const DeepCollectionEquality().hash(_drawPaths),
-      fill,
-      stroke);
+  int get hashCode => Object.hash(runtimeType, id, characterPath, image,
+      const DeepCollectionEquality().hash(_drawPaths), fill, stroke);
 
   @JsonKey(ignore: true)
   @override
@@ -269,10 +270,12 @@ class _$_CharacterDrawPath implements _CharacterDrawPath {
 abstract class _CharacterDrawPath implements CharacterDrawPath {
   const factory _CharacterDrawPath(
       {required final String id,
-      @PathJsonConverter() required final Path characterPath,
-      @Uint8ListJsonConverter() final Uint8List? unit8ListImage,
+      @PathJsonConverter() required final ui.Path characterPath,
+      @JsonKey(includeFromJson: false, includeToJson: true)
+      @ImageJsonConverter()
+      final ui.Image? image,
       final List<DrawPath> drawPaths,
-      @ColorJsonConverter() final Color? fill,
+      @ColorJsonConverter() final ui.Color? fill,
       final Stroke? stroke}) = _$_CharacterDrawPath;
 
   factory _CharacterDrawPath.fromJson(Map<String, dynamic> json) =
@@ -282,15 +285,16 @@ abstract class _CharacterDrawPath implements CharacterDrawPath {
   String get id;
   @override
   @PathJsonConverter()
-  Path get characterPath;
+  ui.Path get characterPath;
   @override
-  @Uint8ListJsonConverter()
-  Uint8List? get unit8ListImage;
+  @JsonKey(includeFromJson: false, includeToJson: true)
+  @ImageJsonConverter()
+  ui.Image? get image;
   @override
   List<DrawPath> get drawPaths;
   @override
   @ColorJsonConverter()
-  Color? get fill;
+  ui.Color? get fill;
   @override
   Stroke? get stroke;
   @override

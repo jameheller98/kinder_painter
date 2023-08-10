@@ -7,12 +7,12 @@ part of 'materials_controller.dart';
 // **************************************************************************
 
 String _$materialsControllerHash() =>
-    r'8fd62ce346f85d85095b93cbf49841729f35836a';
+    r'7695b6c46b62b2b3f34639c91bd799e65b58d8a7';
 
 /// See also [MaterialsController].
 @ProviderFor(MaterialsController)
 final materialsControllerProvider =
-    NotifierProvider<MaterialsController, DrawMaterial>.internal(
+    AsyncNotifierProvider<MaterialsController, DrawMaterial>.internal(
   MaterialsController.new,
   name: r'materialsControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final materialsControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$MaterialsController = Notifier<DrawMaterial>;
+typedef _$MaterialsController = AsyncNotifier<DrawMaterial>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member

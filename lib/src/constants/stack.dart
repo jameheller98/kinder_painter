@@ -5,6 +5,10 @@ class Stack<E> {
     _list = [...listCopy];
   }
 
+  void forEach(void Function(E e) callback) {
+    _list.forEach(callback);
+  }
+
   void push(E value) => _list.add(value);
 
   E pop() => _list.removeLast();

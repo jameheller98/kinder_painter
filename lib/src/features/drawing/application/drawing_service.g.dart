@@ -6,7 +6,7 @@ part of 'drawing_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$drawingServiceHash() => r'19ca171760c6418883fd855f61f04d184ba793c4';
+String _$drawingServiceHash() => r'e5eced2069dd0ca129864fdbd9fb929261e1da0a';
 
 /// See also [DrawingService].
 @ProviderFor(DrawingService)

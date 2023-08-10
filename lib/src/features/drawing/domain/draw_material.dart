@@ -8,6 +8,8 @@ part 'draw_material.freezed.dart';
 class DrawMaterial with _$DrawMaterial {
   const factory DrawMaterial({
     required Material currentMaterial,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    List<Map<String, dynamic>>? listImagePattern,
     required List<Material> materials,
   }) = _DrawMaterial;
 }

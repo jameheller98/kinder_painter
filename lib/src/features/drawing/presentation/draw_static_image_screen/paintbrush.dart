@@ -19,35 +19,40 @@ class Paintbrush extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final paintbrush = ref.watch(paintbrushControllerProvider);
+    final paintbrushAsync = ref.watch(paintbrushControllerProvider);
 
-    return PressableAnimated(
-      onPress: () => ref
-          .read(paintbrushControllerProvider.notifier)
-          .handleChangePaintbrush(type),
-      child: Transform.translate(
-        offset:
-            paintbrush.type == type ? const Offset(2, 0) : const Offset(10, 0),
-        child: Transform.scale(
-          scale: paintbrush.type == type ? 1.3 : 0.9,
-          child: ShadowCustom(
-            color: Colors.black,
-            opacity: 0.25,
-            offset: const Offset(0, 4),
-            blur: 5,
-            child: SvgPicture.string(
-              stringSvg(
-                paintbrush.type == type &&
-                        paintbrush.type != TypePaintbrush.eraser
-                    ? paintbrush.type != TypePaintbrush.waterPaint
-                        ? paintbrush.stroke!.color
-                        : paintbrush.fill!
-                    : null,
+    return paintbrushAsync.when(
+      data: (paintbrush) => PressableAnimated(
+        onPress: () => ref
+            .read(paintbrushControllerProvider.notifier)
+            .handleChangePaintbrush(type),
+        child: Transform.translate(
+          offset: paintbrush.type == type
+              ? const Offset(2, 0)
+              : const Offset(10, 0),
+          child: Transform.scale(
+            scale: paintbrush.type == type ? 1.3 : 0.9,
+            child: ShadowCustom(
+              color: Colors.black,
+              opacity: 0.25,
+              offset: const Offset(0, 4),
+              blur: 5,
+              child: SvgPicture.string(
+                stringSvg(
+                  paintbrush.type == type &&
+                          paintbrush.type != TypePaintbrush.eraser
+                      ? paintbrush.type != TypePaintbrush.waterPaint
+                          ? paintbrush.stroke!.color
+                          : paintbrush.fill!
+                      : null,
+                ),
               ),
             ),
           ),
         ),
       ),
+      loading: () => const SizedBox.shrink(),
+      error: (error, stackTrace) => const SizedBox.shrink(),
     );
   }
 }

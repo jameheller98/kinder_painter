@@ -14,7 +14,13 @@ class DrawBackground extends ConsumerWidget {
 
     return GestureDetector(
       onPanStart: modeLeft != ModeToolLeft.idle
-          ? ref.read(drawControllerProvider.notifier).handleTouchStart
+          ? (details) {
+              ref.read(modeToolLeftStateProvider.notifier).state =
+                  ModeToolLeft.brush;
+              ref
+                  .read(drawControllerProvider.notifier)
+                  .handleTouchStart(details);
+            }
           : null,
       onPanUpdate: modeLeft != ModeToolLeft.idle
           ? ref.read(drawControllerProvider.notifier).handleTouchMove
